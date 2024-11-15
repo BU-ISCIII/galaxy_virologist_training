@@ -442,7 +442,7 @@ https://zenodo.org/record/5724464/files/SARSCOV2-2_R2.fastq.gz?download=1
 <ul>
 <li>Select multiple file data set and select the fastq files R1 and R2 for both samples</li>
 <li>With <em>Ctrl</em> select the two datasets</li>
-<li>Then go down and select <strong>Execute</strong></li>
+<li>Then go down and select <strong>Run tool</strong></li>
 </ul>
 <p align="center"><img src="images/viralrecon_fastqc.png" alt="viralrecon_fastqc" width="900"></p>
 <h3 id="fastqc-results-visualization-and-interprepation-questions">FastQC results visualization and interprepation questions</h3>
@@ -473,8 +473,8 @@ https://zenodo.org/record/5724464/files/SARSCOV2-2_R2.fastq.gz?download=1
 <ul>
 <li>Single-end or paired reads &gt; Paired
 <ul>
-<li>Input 1 &gt; Browse datasets (right folder icon) &gt; Select both forward reads for both samples</li>
-<li>Input 2 &gt; Browse datasets &gt; Select reverse reads for both samples</li>
+<li>Input 1 &gt; Multiple datasets &gt; Select R1 reads for both samples</li>
+<li>Input 2 &gt; Multiple datasets &gt; Select R2 reads for both samples</li>
 </ul>
 </li>
 <li>Display Filter Options
@@ -506,12 +506,11 @@ https://zenodo.org/record/5724464/files/SARSCOV2-2_R2.fastq.gz?download=1
 </li>
 </ul>
 </li>
-<li>Finally, click on <strong>Execute</strong></li>
+<li>Finally, click on <strong>Run tool</strong></li>
 </ol>
 <p><img src="images/viralrecon_fastp1.png" alt="fastp1">
 <img src="images/viralrecon_fastp2.png" alt="fastp2">
-<img src="images/viralrecon_fastp3.png" alt="fastp3">
-<img src="images/viralrecon_fastp4.png" alt="fastp4"></p>
+<img src="images/viralrecon_fastp3.png" alt="fastp3"></p>
 <p>A message will appear, which means that 6 results will be generated:</p>
 <ol>
 <li>Two, one with the R1 trimmed reads, for each sample</li>
@@ -545,26 +544,26 @@ https://zenodo.org/record/5724464/files/SARSCOV2-2_R2.fastq.gz?download=1
 <details>
 <summary>How many reads are we keeping from sample1?</summary>
 <br>
-65.056 reads (65.06%)
+67.598 reads (67.6%)
 </details>
 <details>
 <summary>How many reads did we lost for sample1 and why?</summary>
 <br>
-Low quality: 29.092 (29,09%) <br>
+Low quality: 26.814 (26.81%) <br>
 Too many Ns: 6 (0%)<br>
-Too short: 5.846 (5.85%)<br> 
+Too short: 5.582 (5.58%)<br> 
 </details>
 <details>
 <summary>How many reads are we keeping from sample2?</summary>
 <br>
-63.318 (63.32%)
+65.172 (65.17%)
 </details>
 <details>
 <summary>How many reads did we lost for sample2 and why?</summary>
 <br>
-Low quality: 31.526 (31.53%) <br>
+Low quality: 29.148 (29.15%) <br>
 Too many Ns: 4 (0%) <br>
-Too short: 5.152 (5.15%) <br>
+Too short: 5.676 (5.68%) <br>
 </details>
 <h2 id="mapping">Mapping</h2>
 <p>In order to call for variants between the samples and the reference, it's mandatory to map the sample reads to the reference genome. To do this we need the fasta file of the reference and the Bowtie2 index of that fasta file.</p>
@@ -572,23 +571,13 @@ Too short: 5.152 (5.15%) <br>
 <p>Now we can start with the main mapping process. The first thing we have to do is look for the program &quot;<em>Bowtie2</em>&quot; in the search bar and then select &quot;<em>Bowtie2 - map reads against reference genome</em>&quot;. Here we will have to set the following parameters, for the first sample, same as <a href="04_mapping.md#map-reads-using-bowtie2">here</a></p>
 <ol start="3">
 <li>Is this single or paired library &gt; Paired-end</li>
-<li>Fasta/Q file #1: <strong>fastp Read 1 output</strong> for both samples</li>
-<li>Fasta/Q file #2: <strong>fastp Read 2 output</strong> for both samples</li>
-<li>Will you select a reference genome from your history or use a built-in index? &gt; Use a genome from the history and create index</li>
-</ol>
-<ul>
-<li><strong>This is very important because we haven't previously created the SARS-Cov2 genome index, si bowtie 2 will generate it automatically.</strong></li>
-</ul>
-<ol start="7">
-<li>Select reference genome &gt; GCF_009858895.2_ASM985889v3_genomic.200409.fna.gz</li>
-</ol>
-<ul>
-<li>It's important to select the file we downloaded from URL.</li>
-</ul>
-<ol start="8">
+<li>Fasta/Q file #1: Multiple datasets &gt; <strong>fastp Read 1 output</strong> for both samples</li>
+<li>Fasta/Q file #2: Multiple datasets &gt; <strong>fastp Read 2 output</strong> for both samples</li>
+<li>Will you select a reference genome from your history or use a built-in index? &gt; Use a built-in genome index</li>
+<li>Select reference genome &gt; SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).</li>
 <li>Do you want to use presets? &gt; Very sensitive local</li>
 <li>Save the bowtie2 mapping statistics to the history &gt; Yes</li>
-<li>Execute</li>
+<li>Run tool</li>
 </ol>
 <p><img src="images/viralrecon_bowtie1.png" alt="bowtie1">
 <img src="images/viralrecon_bowtie2.png" alt="bowtie2"></p>
@@ -604,7 +593,7 @@ Too short: 5.152 (5.15%) <br>
 <details>
 <summary>And the overall alignment rate for sample2?</summary>
 <br>
-97.75%
+97.73%
 </details>
 <h2 id="stats">Stats</h2>
 <p>The previously shown files give few human readable information, because mapping files are supposed to be used by other programs. In this sense, we can use some programs to extract relevant statistical information about the mapping process.</p>
@@ -617,23 +606,23 @@ Too short: 5.152 (5.15%) <br>
 <details>
 <summary>How many reads mapped against the refernce genome for sample1?</summary>
 <br>
-64856
+67390
 </details>
 <details>
 <summary> And how many for sample2?</summary>
 <br>
-61891
+63695
 </details>
 <h3 id="picard-collectwgsmetrics">Picard CollectWgsMetrics</h3>
 <p>Another program that gives statistical information about the mapping process is Picard. To run this program you just have to search &quot;<em>Collect Wgs Metrics</em>&quot; and then select &quot;<em>CollectWgsMetrics compute metrics for evaluating of whole genome sequencing experiments</em>&quot;.</p>
 <p>You have to change the following parameters:</p>
 <ol>
 <li>Select SAM/BAM dataset or dataset collection &gt; Dataset collection &gt; Select both bam files at once</li>
-<li>Load reference genome from &gt; History</li>
-<li>Select the fasta file we uploaded with the reference genome (NC_045512.2).</li>
+<li>Load reference genome from &gt; Local cache</li>
+<li>Using reference genome &gt; SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).</li>
 <li>Treat bases with coverage exceeding this value as if they had coverage at this value = 1000</li>
 <li>Select validation stringency &gt; Lenient</li>
-<li>Execute.</li>
+<li>Run tool.</li>
 </ol>
 <p><img src="images/viralrecon_picard.png" alt="picard_wgsmetrics1"></p>
 <p>This process will generate one output file per .bam alignment file selected as input.</p>
@@ -644,22 +633,22 @@ Too short: 5.152 (5.15%) <br>
 <details>
 <summary>Which is the mean coverage for sample1?</summary>
 <br>
-156.672207
+162.190917
 </details>
 <details>
 <summary>Which percetage of the reference genome is covered to more than 10X by sample1 reads?</summary>
 <br>
-78.44%
+78.58%
 </details>
 <details>
 <summary>Which is the mean coverage for sample2?</summary>
 <br>
-158.232619
+163.623282
 </details>
 <details>
 <summary> Which percetage of the reference genome is covered to more than 10X by sample2 reads?</summary>
 <br>
-88.18%
+88.69%
 </details>
 <h2 id="amplicons">Amplicons</h2>
 <p>After mapping the reads to the reference genome, we are interested in removing the sequences of the amplicon primers. To do that you will use a program called iVar, and you will need a bed file with the positions of those amplicon primers.</p>
@@ -667,9 +656,11 @@ Too short: 5.152 (5.15%) <br>
 <p>Once you have the bed file, you just have to search for &quot;<em>ivar trim</em>&quot; in the search bar and select &quot;<em>ivar trim Trim reads in aligned BAM</em>&quot;. Then follow these steps:</p>
 <ol>
 <li>Bam file &gt; Select the aligment bam file generated with Bowtie2 for both samples.</li>
-<li>BED file with primer sequences and positions &gt; Select the Amplicon bed file.</li>
+<li>Source of primer information &gt; Built-in.</li>
+<li>Primer scheme name &gt; SARS-CoV-2-ARTICv3</li>
 <li>Include reads with no primers &gt; Yes.</li>
-<li>Minimum length of read to retain after trimming = 20</li>
+<li>Require a minimum length for reads to retain them after any trimming? &gt; Yes and provide a custom threshold</li>
+<li>Minimum trimmed length threshold = 20</li>
 </ol>
 <p><img src="images/viralrecon_ivartrim.png" alt="ivar_trim1"></p>
 <h3 id="ivar-trim-results">iVar trim results</h3>
@@ -681,6 +672,7 @@ Too short: 5.152 (5.15%) <br>
 <ol>
 <li>Search for <code>ivar variants</code> and select <code>ivar variants Call variants from aligned BAM file</code></li>
 <li>Bam file &gt; Select ivar trimmed bam files for both samples</li>
+<li>Reference &gt; GCF_009858895.2_ASM985889v3 (as fasta)</li>
 <li>Minimum frequency threshold &gt; 0,75</li>
 <li>Output format &gt; Both tabular and VCF</li>
 <li>In VCF only output variants that PASS all filters &gt; Yes</li>
