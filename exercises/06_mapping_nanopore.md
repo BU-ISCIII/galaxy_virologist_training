@@ -20,7 +20,7 @@ In this tutorial, we are going to see an example of how to assemble long reads f
 
 ### Training dataset
 
-- [SRA ID: ERR10297654](https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&acc=ERR10297654&display=metadata
+- [SRA ID: ERR10297654](https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-run-30/ERR010/10297/ERR10297654/ERR10297654.1)
 
 ### Create new history
 
