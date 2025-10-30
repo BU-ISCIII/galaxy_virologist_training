@@ -65,7 +65,9 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 
 <p align="center"><img src="images/search_bowtie2.png" alt="Search bowtie" width="400"></p>   
 
-2. Set bowtie2 parameters:
+2. Set bowtie2 version to: 2.5.3+galaxy1
+
+3. Set bowtie2 parameters:
 
     - Is this single or paired library: paired.
     - FASTA/Q file #1 : ERR5310322_1
@@ -77,7 +79,7 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 <p align="center"><img src="images/bowtie2params1.png" alt="Search bowtie" width="900"></p>   
 <p align="center"><img src="images/bowtie2params2.png" alt="Search bowtie" width="900"></p>   
 
-3. Click execute and wait.
+4. Click execute and wait.
 
 ### Visualize bam file and calculate metrics
 
