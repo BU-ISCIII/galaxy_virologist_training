@@ -113,7 +113,7 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
     <details>
     <summary> Which is mean depth of coverage?</summary>
     <br>
-    2805
+    221
     </details>
     <details>
     <summary> Which is genome coverage > 10x?</summary>
