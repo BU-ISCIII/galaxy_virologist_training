@@ -67,6 +67,8 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 
 2. Set bowtie2 version to: 2.5.3+galaxy1
 
+<p align="center"><img src="images/select_version.png" alt="Select version" width="400"></p>
+
 3. Set bowtie2 parameters:
 
     - Is this single or paired library: paired.
