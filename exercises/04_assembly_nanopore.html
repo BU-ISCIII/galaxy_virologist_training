@@ -225,7 +225,7 @@ pre code {
 }
 
 </style>
-<link rel="stylesheet" href="file:///Users/svarona/Repositories/galaxy_virologist_training/C%3A%5CUsers%5CSara%5CGoogle%20Drive%5Coposiciones%5Copos_tecnologo%5Coposiciones%5Ccss%5Ccustom_md_style.css" type="text/css">
+
 <style>
 /* Tomorrow Theme */
 /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
@@ -353,7 +353,7 @@ code {
 }
 
 </style>
-<link rel="stylesheet" href="file:///Users/svarona/Repositories/galaxy_virologist_training/C%3A%5CUsers%5CSara%5CGoogle%20Drive%5Coposiciones%5Copos_tecnologo%5Coposiciones%5Ccss%5Ccustom_md_style.css" type="text/css">
+
 <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
@@ -365,7 +365,7 @@ code {
           : 'default'
     });
   </script>
-<h1 id="galaxy-for-virologist-training-exercise-4-nanopore-assembly-101">Galaxy for virologist training Exercise 4: Nanopore Assembly 101</h1>
+<h1 id="galaxy-for-virologist-training-exercise-4-nanopore-assembly-101">Galaxy for virologist training. Exercise 4: Nanopore Assembly 101</h1>
 <div class="tables-start"></div>
 <table>
 <thead>
@@ -377,15 +377,15 @@ code {
 <tbody>
 <tr>
 <td><strong>Training dataset:</strong></td>
-<td>Nanopore MinION Sequencing of a Monkey Pox Virus (MPXV) from Spain 2022 oubreak. Data is publicly available at SRA with <a href="https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&amp;acc=ERR10297654&amp;display=metadata">ID ERR10297654</a>. <a href="https://pubmed.ncbi.nlm.nih.gov/38637500/">Paper</a></td>
+<td>Nanopore MinION Sequencing of a Monkey Pox Virus (MPXV) from Spain 2022 oubreak. Data is publicly available at SRA with <a href="https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&amp;acc=ERR10297654&amp;display=metadata"><strong>ID ERR10297654</strong></a>. <a href="https://pubmed.ncbi.nlm.nih.gov/38637500/"><strong>Paper</strong></a>.</td>
 </tr>
 <tr>
 <td><strong>Questions:</strong></td>
-<td><ul><li>How Nanopore reads are differently assembled from Illumina?</li></ul></td>
+<td><ul><li>How different are Nanopore reads assembled from Illumina reads?</li></ul></td>
 </tr>
 <tr>
 <td><strong>Objectives</strong>:</td>
-<td><ul><li>Understand the concept of assembly</li><li>Learn how to interpret assembly quality control metrics</li></ul></td>
+<td><ul><li>Understand the concept of assembly.</li><li>Learn how to interpret assembly quality control metrics.</li></ul></td>
 </tr>
 <tr>
 <td><strong>Estimated time</strong>:</td>
@@ -394,96 +394,93 @@ code {
 </tbody>
 </table>
 <div class="tables-end"></div>
-<h2 id="1-description">1. Description</h2>
-<p>Nanopore techology is a third generation sequencing technique which allows to get longer sequences, but with reduced sequence quality. Different technologies have different formats, qualities, and specific known biases which make the analysis different among them.
-In this tutorial, we are going to see an example of how to assemble long reads from a Nanopore sequencing run.</p>
-<h2 id="2-upload-data-to-galaxy">2. Upload data to galaxy</h2>
-<h3 id="training-dataset">Training dataset</h3>
+<h2 id="1-description"><strong>1. Description</strong></h2>
+<p>Nanopore techology is a third generation sequencing technique which enables the obtaining of longer sequences, but with reduced sequence quality. Different technologies have different formats, qualities, and specific known biases which make the analysis different among them.</p>
+<p>In this tutorial, we will see an example of how to assemble long reads from a Nanopore sequencing run.</p>
+<h2 id="2-upload-data-to-galaxy"><strong>2. Upload data to Galaxy</strong></h2>
+<h3 id="training-dataset"><strong>Training dataset</strong></h3>
 <ul>
-<li>[SRA ID: ERR10297654](https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&amp;acc=ERR10297654&amp;display=metadata</li>
+<li><a href="https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&amp;acc=ERR10297654&amp;display=metadata">SRA ID: <strong>ERR10297654</strong></a>.</li>
 </ul>
-<h3 id="create-new-history">Create new history</h3>
+<h3 id="create-new-history"><strong>Create new history</strong></h3>
 <ul>
-<li>Click the <code>+</code> icon at the top of the history panel and create a new history with the name <code>nanopore assembly 101 tutorial</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_4day_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history">here</a></li>
+<li>Click on the <code>+</code> icon at the top of the history panel and create a new history with the name <code>Nanopore assembly 101 tutorial</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_4day_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history"><strong>here</strong></a>.</li>
 </ul>
-<h3 id="upload-data">Upload data</h3>
+<h3 id="upload-data"><strong>Upload data</strong></h3>
 <ol>
-<li>Look for <code>SRA</code> in the tool search bar and select <code>Faster Download and Extract Reads in FASTQ format from NCBI SRA</code></li>
-<li>Accession = <code>ERR10297654</code></li>
-<li>Execute</li>
+<li>Look for <code>SRA</code> in the tool search bar and select <code>Faster Download and Extract Reads in FASTQ format from NCBI SRA</code>.</li>
+<li>Accession = <code>ERR10297654</code>.</li>
+<li>Run Tool.</li>
 </ol>
 <p align="center"><img src="images/upload_sra_err.png" alt="upload_sra_err" width="900"></p>
-<h3 id="load-reference-file-from-ncbi">Load reference file from NCBI</h3>
+<h3 id="load-reference-file-from-ncbi"><strong>Load reference file from NCBI</strong></h3>
 <ol>
-<li>Search <code>NCBI</code> using the search toolbox and select <code>NCBI Accession Download Download sequences from GenBank/RefSeq by accession through the NCBI ENTREZ API</code></li>
-<li>Select source for IDs &gt; Direct entry</li>
-<li>ID List = NC_063383.1</li>
-<li>Execute</li>
+<li>Search <code>NCBI</code> using the search toolbox and select <code>NCBI Accession Download Download sequences from GenBank/RefSeq by accession through the NCBI ENTREZ API</code>.</li>
+<li>Select source for IDs &gt; <strong>Direct entry</strong>.</li>
+<li>ID List = <strong>NC_063383.1</strong></li>
+<li>Run Tool.</li>
 </ol>
 <p align="center"><img src="images/load_ref_ncbi.png" alt="load_ref_ncbi" width="900"></p>
-<h3 id="unhide-data">Unhide data</h3>
-<p>Using SRA and NCBI API downloads data as hidden so we are going to unhidde this data as follows:</p>
+<h3 id="unhide-data"><strong>Unhide data</strong></h3>
+<p>Using SRA and NCBI API downloads data as hidden so we are going to unhide this data as follows:</p>
 <ol>
-<li>Click on the strikethrough eye (Show hidden)</li>
-<li>Select the strikethrough for ERR10297654 and NC_063383.1 datas.</li>
-<li>Then select the location icon (show active)</li>
+<li>Click on the <strong>strikethrough eye</strong> (Show hidden).</li>
+<li>Select the strikethrough for ERR10297654 and NC_063383.1 data.</li>
+<li>Then select the location icon (show active).</li>
 </ol>
 <p><img src="images/unhide_1.png" alt="unhide_1" width="200"><img src="images/unhide_2.png" alt="unhide_2" width="200"></p>
-<h3 id="assemble-reads-with-flye">Assemble reads with Flye</h3>
+<h3 id="assemble-reads-with-flye"><strong>Assemble reads with Flye</strong></h3>
 <ol>
-<li>Search <code>Flye</code> assembler using the search toolbox and select <code>Flye de novo assembler for single molecule sequencing reads</code></li>
-<li>Input reads: ERR10297654</li>
-<li>Click execute and wait.</li>
+<li>Search for the <code>Flye</code> assembler using the search toolbox and select <code>Flye de novo assembler for single molecule sequencing reads</code>.</li>
+<li>Input reads: <strong>ERR10297654</strong>.</li>
+<li>Click on Run Tool and wait.</li>
 </ol>
 <p align="center"><img src="images/flye_params.png" alt="flye_params" width="900"></p>
-<h3 id="assembly-quality-control-with-quast">Assembly quality control with Quast</h3>
+<h3 id="assembly-quality-control-with-quast"><strong>Assembly quality control with QUAST</strong></h3>
 <ol>
-<li>Search Quast in the search tool box.</li>
-<li><img class="emoji" alt="warning" src="data:image/png;base64,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" /> <strong>Assembly mode? &gt; Individual assembly</strong></li>
-<li>Contigs/scaffolds file &gt; Flye results</li>
-<li>Use a reference genome: Yes. Select the NC_063383.1 fasta file previously loaded.</li>
+<li>Search QUAST in the search tool box.</li>
+<li><strong>Assembly mode? &gt; Individual assembly</strong>.</li>
+<li>Contigs/scaffolds file &gt; <strong>Flye results</strong>.</li>
+<li>Use a reference genome: <strong>Yes</strong>. Select the <strong>NC_063383.1 FASTA file</strong> previously loaded.</li>
+<li>Run Tool.</li>
 </ol>
 <p align="center"><img src="images/quast_flye.png" alt="quast_flye" width="900"></p>
-<ol start="4">
+<ol start="6">
 <li>
-<p>Click the :eye: icon Quast HTML report.</p>
+<p>Click on the eye icon from the <strong>QUAST HTML report</strong>.</p>
  <details>
  <summary>How much of or reference genome have we reconstructed?</summary>
- </br>
- Genome fraction: 98.25
+ <b>Genome fraction: 100</b>
  </details>
  <details>
  <summary>How many contigs do we have greater than 1000 pb?</summary>
- </br>
- 12 (this may vary +-1 contig)
+ <b>18 (this may vary +-1 contig).</b>
  </details>
  <details>
  <summary>How long is the largest contig in the assembly?</summary>
- </br>
- 194020 (this can vary +-10 nucleotides)
+ <b>199259 (this can vary +-10 nucleotides).</b>
  </details>
  <details>
- <summary>Which is the N50?</summary
- </br>
- 194020 (length of the largest contig in this case)
+ <summary>Which is the N50?</summary>
+ <b>199259 (length of the largest contig in this case).</b>
  </details>
 </li>
 <li>
-<p>Open the Icarus viewer in the quast report.</p>
+<p>Open the <strong>Icarus</strong> viewer in the QUAST report.</p>
 </li>
 </ol>
 <p align="center"><img src="images/icarus.png" alt="quast params" width="400"></p>
 <details>
  <summary>Which contig align against our reference genome?</summary>
- </br>
- Contig 13 aligned correctly (this can vary, it should correspond to the number of the largest contig)
+ <b>Contig 14 aligned correctly (this can vary, it should correspond to the number of the largest contig).</b>
  <p align="center"><img src="images/flye_icarus.png" alt="flye_icarus" width="900"></p>
 </details>
+<br>
 <blockquote>
-<p>This training history is available at: https://usegalaxy.eu/u/s.varona/h/nanopore-assembly-101-tutorial</p>
+<p><strong>This training history is available at:</strong> https://usegalaxy.eu/u/s.varona/h/nanopore-assembly-101-tutorial</p>
 </blockquote>
 <blockquote>
-<p>Note: Nanopore data is known to have more error than short sequencing reads. This is why assembly post-processing is strongly recommended, usually using combined sequencing aproximation with both Nanopore and Illumina reads.</p>
+<p><em><strong>NOTE: Nanopore data is known to have a higher error rate than short sequencing reads. This is why assembly post-processing is strongly recommended, usually using combined sequencing aproximation with both Nanopore and Illumina reads.</strong></em></p>
 </blockquote>
 
 </body>
