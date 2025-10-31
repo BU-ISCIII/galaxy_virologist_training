@@ -225,7 +225,7 @@ pre code {
 }
 
 </style>
-<link rel="stylesheet" href="file:///Users/svarona/Repositories/galaxy_virologist_training/C%3A%5CUsers%5CSara%5CGoogle%20Drive%5Coposiciones%5Copos_tecnologo%5Coposiciones%5Ccss%5Ccustom_md_style.css" type="text/css">
+
 <style>
 /* Tomorrow Theme */
 /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
@@ -353,7 +353,7 @@ code {
 }
 
 </style>
-<link rel="stylesheet" href="file:///Users/svarona/Repositories/galaxy_virologist_training/C%3A%5CUsers%5CSara%5CGoogle%20Drive%5Coposiciones%5Copos_tecnologo%5Coposiciones%5Ccss%5Ccustom_md_style.css" type="text/css">
+
 <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
@@ -365,7 +365,7 @@ code {
           : 'default'
     });
   </script>
-<h1 id="galaxy-for-virologist-training-exercise-3-illumina-assembly-101">Galaxy for virologist training Exercise 3: Illumina Assembly 101</h1>
+<h1 id="galaxy-for-virologist-training-exercise-3-illumina-assembly-101">Galaxy for virologist training. Exercise 3: Illumina Assembly 101</h1>
 <div class="tables-start"></div>
 <table>
 <thead>
@@ -377,15 +377,15 @@ code {
 <tbody>
 <tr>
 <td><strong>Training dataset:</strong></td>
-<td>PRJEB43037 - In August 2020, an outbreak of West Nile Virus affected 71 people with meningoencephalitis in Andalusia and 6 more cases in Extremadura (south-west of Spain), causing a total of eight deaths. The virus belonged to the lineage 1 and was relatively similar to previous outbreaks occurred in the Mediterranean region. Here, we present a detailed analysis of the outbreak, including an extensive phylogenetic study. This is one of the outbreak samples.</td>
+<td><strong>PRJEB43037</strong> - In August 2020, an outbreak of <strong>West Nile Virus</strong> affected 71 people with meningoencephalitis in Andalusia and 6 more people in Extremadura (south-west of Spain), causing a total of eight deaths. The virus belonged to the lineage 1 and was relatively similar to previous outbreaks occurred in the Mediterranean region. Here, we present a detailed analysis of the outbreak, including an extensive phylogenetic study. This is one of the outbreak samples.</td>
 </tr>
 <tr>
 <td><strong>Questions:</strong></td>
-<td><ul><li>What is assembly?</li><li>How can I evaluate my assembly?</li></ul></td>
+<td><ul><li>What is an assembly?</li><li>How can I evaluate my assembly?</li></ul></td>
 </tr>
 <tr>
 <td><strong>Objectives</strong>:</td>
-<td><ul><li>Understand assembly concept</li><li>Learn how to interpret assembly quality control metrics</li></ul></td>
+<td><ul><li>Understand the assembly concept.</li><li>Learn how to interpret assembly quality control metrics.</li></ul></td>
 </tr>
 <tr>
 <td><strong>Estimated time</strong>:</td>
@@ -394,45 +394,45 @@ code {
 </tbody>
 </table>
 <div class="tables-end"></div>
-<h2 id="1-description">1. Description</h2>
-<p>Sometimes, we don't have a reference genome to map against, or we want to reconstruct a genome without any bias caused by a reference. In such cases, we need to do a <em>de novo assembly</em>. This type of analysis tries to reconstruct the original genome without any template, using only the reads.
-Some considerations:</p>
+<h2 id="1-description"><strong>1. Description</strong></h2>
+<p>Sometimes, we don't have a reference genome to map our reads against, or we want to reconstruct a genome without any possible bias caused by a reference. In such cases, we need to do a <em><strong>de novo assembly</strong></em>. This type of analysis tries to reconstruct the original genome without any templates, using only the reads themselves.
+Some considerations to consider beforehand:</p>
 <ul>
-<li>When we assemble, the longer the reads are and the longer the size of the library fragments the easier it gets for the assembler. That's why pacbio or nanopore are recommended for assembly. Think of it like a puzzle, the bigger the pieces, the easier it is to form the image.</li>
+<li>When we assemble, the longer the reads are and the longer the size of the library fragments, the easier it is for the assembler. That's why PacBio or Nanopore are recommended for assembly. Think of it like a puzzle, the bigger the pieces, the easier it is to form the image.</li>
 <li>It's almost imposible to reconstruct the entire genome of a large-genome microorganism with only one sequencing, although it can be done for smaller ones, like viruses.</li>
-<li>Assembly is not recommended for amplicon based libraries due to the depth of coverage uneveness and the amplicons intrinsic bias.</li>
+<li>Assembly is not recommended for amplicon based libraries due to the depth of coverage unevenness and the amplicons' intrinsic bias.</li>
 </ul>
-<h2 id="2-upload-data-to-galaxy">2. Upload data to galaxy</h2>
-<h3 id="training-dataset">Training dataset</h3>
+<h2 id="2-upload-data-to-galaxy"><strong>2. Upload data to Galaxy</strong></h2>
+<h3 id="training-dataset"><strong>Training dataset</strong></h3>
 <ul>
-<li>Experiment info: PRJEB43037, WGS, Illumina MiSeq, paired-end</li>
-<li>Fastq R1: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz">ERR5310322_1</a> - url : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz</code></li>
-<li>Fastq R2: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz">ERR5310322_2</a>  url : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz</code></li>
-<li>Reference genome NC_009942.1: <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz">fasta</a> -- <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.gff.gz">gff</a></li>
+<li>Experiment info: PRJEB43037, WGS, Illumina MiSeq, paired-end.</li>
+<li>Fastq R1: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz">ERR5310322_1</a> - URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz</code></li>
+<li>Fastq R2: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz">ERR5310322_2</a>  URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz</code></li>
+<li>Reference genome <strong>NC_009942.1</strong>: <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz"><strong>FASTA</strong></a> -- <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.gff.gz"><strong>GFF</strong></a></li>
 </ul>
-<h3 id="create-new-history">Create new history</h3>
+<h3 id="create-new-history"><strong>Create new history</strong></h3>
 <ul>
-<li>Click the <code>+</code> icon at the top of the history panel and create a new history with the name <code>Illumina Assembly</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_4day_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history">here</a></li>
+<li>Click the <code>+</code> icon at the top of the history panel and create a new history with the name <code>Illumina Assembly</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_4day_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history"><strong>here</strong></a>.</li>
 </ul>
-<h3 id="upload-data">Upload data</h3>
+<h3 id="upload-data"><strong>Upload data</strong></h3>
 <ul>
 <li>Import and rename the read files <code>ERR5310322_1</code> and <code>ERR5310322_2</code>
 <ol>
-<li>Click in upload data.</li>
-<li>Click in paste/fetch data</li>
-<li>Copy url for fastq R1 (select and Ctrl+C) and paste (Ctrl+V).</li>
-<li>Click in Start.</li>
-<li>Wait until the job finishes (green in history)</li>
+<li>Click on <strong>Upload</strong>.</li>
+<li>Click on <strong>Paste/Fetch data</strong>.</li>
+<li>Copy URL for fastq R1 (select and Ctrl+C) and paste (Ctrl+V).</li>
+<li>Click on <strong>Start</strong>.</li>
+<li>Wait until the job finishes (green in history).</li>
 <li>Do the same for fastq R2.</li>
 </ol>
 </li>
 </ul>
 <p align="center"><img src="images/upload_data_mapping.png" alt="Upload data mapping" width="900"></p>
 <ul>
-<li>Rename R1 and R2 files.
+<li><strong>Rename R1 and R2 files</strong>.
 <ol>
-<li>Click in the ✏️ in the history for <code>ERR5310322_1.fastq.gz</code></li>
-<li>Change the name to <code>ERR5310322_1</code></li>
+<li>Click on the ✏️ in the history for <code>ERR5310322_1.fastq.gz</code>.</li>
+<li>Change the name to <code>ERR5310322_1</code>.</li>
 <li>Do the same for R2.</li>
 </ol>
 </li>
@@ -448,84 +448,95 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 <ul>
 <li>Rename the reference genome and gff file.
 <ol>
-<li>Click the ✏️ for the reference file in the history.</li>
-<li>Change the name to <code>NC_009942.1</code></li>
+<li>Click on the ✏️ for the reference file in the history.</li>
+<li>Change the name to <code>NC_009942.1</code>.</li>
 </ol>
 </li>
 </ul>
 <p align="center"><img src="images/changename2.png" alt="Change name 2" width="900"></p>    
 <ul>
-<li>Finally, add some usefull tags</li>
+<li>Finally, add some useful tags if you like.</li>
 </ul>
-<h3 id="assemble-reads-with-spades">Assemble reads with Spades</h3>
+<h3 id="assemble-reads-with-spades"><strong>Assemble reads with SPAdes</strong></h3>
 <ol>
-<li>Search <code>Spades</code> in the search tool box and select <em>rnaviralSPAdes de novo assembler for transcriptomes, metatranscriptomes and metaviromes</em></li>
-<li>Single-end or paired-end short-reads &gt; Paired-end: individual datasets</li>
-<li><em>FASTQ RNA-seq file(s): forward reads</em>: ERR5310322_1; <em>FASTQ RNA-seq file(s): reverse reads</em>: ERR5310322_2</li>
-<li>Select optional output file(s) &gt; Scaffolds stats</li>
-<li>Click execute and wait.</li>
+<li>Search <code>Spades</code> in the search tool box and select <em><strong>rnaviralSPAdes de novo assembler for transcriptomes, metatranscriptomes and metaviromes</strong></em>.</li>
+<li>Single-end or paired-end short-reads &gt; <strong>Paired-end: list of dataset pairs</strong>.</li>
+</ol>
+<blockquote>
+<p>[!WARNING]
+To be able to continue, it is necessary to first create a <strong>list of paired datasets</strong>, given our .fastq files, which will then be used for the rest of the steps of this workshop. In order to do so, we must:</p>
+<ol>
+<li>Select our fastqsanger.gz files that we uploaded in the beginning, and then click on <em>2 of X selected</em>.</li>
+<li>Select <em>Advanced Build List</em>.</li>
+<li>Select the <em>List of Paired Datasets</em> box and click on <em>Next</em>.</li>
+<li>Check the auto-pairing configuration and click again on <em>Next</em>.</li>
+<li>Give a name to your list and finally click on <em>Build</em>.</li>
+</ol>
+<p>Once this is done, you'll be able to select your list as input of SPAdes.</p>
+</blockquote>
+<ol start="3">
+<li>FASTQ RNA-seq file(s): collection: <strong>ERR5310322</strong></li>
+<li>Select optional output file(s) &gt; <strong>Scaffolds stats</strong> and <strong>Contigs stats</strong>, along with the options selected by default.</li>
+<li>Click on <strong>Run Tool</strong> and wait.</li>
 </ol>
 <p align="center"><img src="images/spades_params.png" alt="Spades params" width="900"></p>
 <p align="center"><img src="images/spades_params_2.png" alt="Spades params 2" width="900"></p>
 <blockquote>
-<p><strong>Warning</strong>
-<img class="emoji" alt="coffee" src="data:image/png;base64,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" /><img class="emoji" alt="fork_and_knife" src="data:image/png;base64,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" /><img class="emoji" alt="clock330" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAKeklEQVR4Xu2Ye2xcV53HP/fO3HnHY4/tOONHnnbeWcdxmqZpkzbdllSstN3VJlWJgA1tdwUFIVqVFoFUBaryEKI8irTRqt2q2rK7akGiqy5IRJCFAikQBGmdpHEequPx2zO2x/O6cx+H6uhIV/MwEwNR/+F7dM6998y58/v+XueeczTBewudZeOvBO5LHB44cuT+R4995aET//riv7z40IljX7n/0fsOHx64L3GDCdzb+08PHnux8+SW1wb+bc+Tgw/v/tDgkcEjuz40+PCeJwdObHmt8+RHXjj8wL29LAN+rgsHQ/G740d6b21viYeiwbgeI4iBgQYILCxMcuQ6slsW7p2Z+/DPs99dOHmqRGOgicbC/Yl/SDzUPdgWawu2anECFCmSp4jAAXzohIgRJIrFHGkxW0rnxn47/dz8q6fsP5vA+/e2Pbb2js6mpLGKEAvMkEMjQpwIUQwEliSzQAFBjHbilJhksjyeHfnJzDP/96s/g0BfcNOnNn18zcruYBdBUswSposeElJrHU25QODi4pBhlDGKtNFNmRQp89rk8LcvPHvJ/JMI7F/d/dXN96xtWkOCFFN0sJV2DPxLRq6LjcUUF5mkg24yjDCyMPyD0Sd+OrrsLLh7oPflXfdub9qBwRlcDnGQ1UQJoCMAEF5V0AkQZS13cAiHMxjsYEt85z/2/s89/cskcPu+dS/1D24ObiTFZW7hb0kSRlOCNYRqqaio/jBJ7mIfl0mxmc2hHXvWvnTnzctwwf7BLf+1rXeL3sF5wtzBCnw4ii+4Naxd7xd1DxoOOU5RZCuTnHfPX7x89NTvr4vAzev6XhkY2KG3M0QXe4kgcJXmy4OPAqcZZzvTnHPPnrl65PVrDSei7bG+b23buUmKX8segth4EADK+Hj31VBUbSLcxq8ZYjuWbu4qfGP3B88UGljgzi/se6I/sJHzJNmHD7eeqJq+paHj8Esm2MowZ81fPXXy6T8ahHtu3/SJdYG1jBBnLwYOQokQXvGeanpRY707B4NbaGKEtawL9j1ycO/SBOgJrzq+oWUNJfLsx8BSwl1chKxe0KlfqlJSjqsiaOHnAHlKvEuhtfmpviAe8B3HwyvH+j+22dcjE2+VEg/U6Kdaj4pHDZWcVb0RogyxGptid/byR96sa4EN8eQne4zVTJFkDWXlfaGueLZAKE09XVHPyOpRQI0ts4YkU/TQHVj1SH+0rgW+c3THg1v1laQ4gIHL8lE/VYXStJW3SGKTbZ9964FzNVmgGe87eefte8nTxK2UEPxloRHiF2SJcZqfnvzhPcKtcsG2nV03tRMhy2ZsBH9pCGw2s0iYdlbtu2lLTQyE/r4tsoocCRLY3AjYJGghRwdtUePvqgho/vjBBM3MsxqB4EZAIOhhnhZaiR2qItC7JrG1BT8WCUw0bgQ0TFqx8NNMU/+BZMW3ILi1ubmJMmEimOgY6Lho1xX1sm0wQsOViR0hTJkmmhOpTUx4FsD3NzEthskKKdiiJO2gN9ZKtUtC/YtJCRsXnRWYxIhp1g7PAmj6QF+IECU65TBwJI2AtATVHySlNYqiuq+5CgAcTMqqD2zijBEkhLHRIwC+UEeQADlCUjQgLVGkhEEQXQlyPW3R0AiosdUkfDj40Ch6wtGVYiEs5K6iIgZ0f4sfHQhgV31wSpSlKJ+0huatgDD4AeeJUh82m7gZE+G9I3sNQMePr00RUFkYlTrhw8XFg1DiCupXv6w6GgZFXiNBYYnpt8zbbCVYM6n5leP0WAUBoUnTeR+fmugWCOlP1LgAFtNMY2Dh1iFg0qscqnkuwpOCVpGGVtmRutuyXRLKkzagUWYDLgvspL1aTym2H0G54j1ASXCwTY8AiPKihQNYCERNHnvZ7nj9OARIMsGtbKBANQSu90nDQfViySeL8kIFAXu2hImPAvFKApWr/ioBNhZlTBnttXCphUYBn8wue9ojAI41VqRAkwwp1zObqoCXnLL1YqKMjYNNBWp2CfKqCITIUsQZqSBQurBIVsa0qzTWsFV1vByXvkX2aNKTriyVyzVNKSHfVK2XvAWCZFnAGvIIIMTqc3PmXLCPRSzc2p1f3auQvrQVEYV6a0cP0mUx5pg3nfMVWTB6sSeV2VBCJ0fUCzVvN1jzVzKSsVF0UbpXvSXA65H/rlMiw8KVC8OVC5Lswpk0c0RIo1Uus1VxoWpPoOFQxsJVozydhezBW6CqMRppIsyRJndalCsJlIs/mhCTBMhiAe51FkcWcZ2jLbIEmGRC2P9bsyht3rDtxwfW3AHEWIlFIxiYfI0WZvhn+sjTGH5myAH/z+tXJgavVMwDwMLE3A9TH73GdmZpRdAIAkdZAEDQGC4Z2hgiRfYVKb6SAKXZ76Q+MBJfS5hpVqrlg6wV+Y/KcAHYWGoWELhVKwe96tzAzzQhcowwlsm/UGdnJNyZoZlXR7gs08QE1P5HaYsXGfJZxYDawDkqL4QqKNugYgRM5ljBZUbI/PfVK/XPB7ITJ5oPdXR00cYo69DqzAMeXHVA6VRNRfXnAI1R2pjmKu+Mp78hnLoEhKsNTT1/6bOt3EaQqQahKKTGFVovCT9TBHE5xzCZr6euLn1Ckks9H93fsr+FXcyQIY5DLZS3JQULR93J3rrwMUeRVfyai4yenPx34S5JQAhtdPyLsf+IJaNsZQxowq5LQU3F2CgCipJWR3yWebo4xxCXUpnPpLOwJAEQlvaL0NPGl4MxP5tI4dK8pCMcygQpY+MuGSkGcyzSxTBnOb84+fjIm41Py3OZ7wWS/sc1Q2Mz45i017WCTZAQYxg0qUyohcEUDmu4wO9405p6qvx9YddY6DiVOM7n8qVL+Iq7LZ+P9ZRJE8aPW+OGAN3o3MVGynUI+LCZIEQ7Q5zhrDXxpalnJ/PXdVIqRHHs2jdHnjlbOM0bhOhklgx6zYmoyXqOshNTuUBWWUAnwwydRHiD05zNjx0f/3o6u4zDak0Pd668r+ux9clN9LOaBeYJswINgVOxOaEiBXU5YpEicVoY4SwXuTo2cXzhZSWeRjHgzQnj6f903sl/OrM3TR/bWC910ggT9qZkXJTB1XOBggzcJGl+zjCXGf9Z9vPmG+nC8o/r0TSizb0rH2i7v7O9l/X00orFPAUEfll8aKDS0cYBIjTjJ80VrnKZ8em5F+ZOTI4JCxoT8MSCV41Qsnl34mjbwY6mHrrpIUkTDg4FTGluZBskgo6PRSa5RopRprLpH2Wfy5zNZypCBCE0TYgKAkooKKGoIh3qw0c03JUYjB1qvqV1ZRsdJGinhRghAvgBmzIl8qRlmWGazNT867lX53+Xm8X0Vq64lUeqQigCWkVMKdHgkypJCviIhduj62I3RQZX9DW1x/QoEUlAgjImefLk3Oz04nDxN/lf5kYKGUo4sqilA4oCqFaSUC6oIaGrZbxPVR0DI9AUTBgd0Y2BdcbqQLuxQg/7A2CXnaKdtWesd8pX8m+Xp815M4+F0tz7XuFWC68TA4qMolLrEmmVSDDsD/uDetDnR0NowrGcd0nYhVIRU4pTmnpXZXbqxkAjKEK1cYJqRZVhvRZPVIMseO/wBweaUDTvBkVDAAAAAElFTkSuQmCC" /> <strong>Assembly takes time!</strong>
+<p>[!WARNING]
+<strong>Assembly takes time!</strong>
 There is no such thing as Assembly in real time. It can take anywhere between 90 minutes and two hours.</p>
 </blockquote>
 <p><strong>Questions:</strong></p>
-<p>Click the :eye: icon in the history: Spades Contigs stats.
+<p>Click on the eye icon in the history: <strong>Spades Contigs stats</strong>.
 <details>
-<summary>How many contigs has been assembled?</summary>
-</br>
-46
+<summary>How many contigs have been assembled?</summary>
+<b>46</b>
 </details></p>
-<p>Click the :eye: icon in the history: Spades scaffolds.</p>
-<h3 id="assembly-quality-control-with-quast">Assembly quality control with Quast</h3>
+<h3 id="assembly-quality-control-with-quast"><strong>Assembly quality control with QUAST</strong></h3>
 <ol>
-<li>Search Quast in the search tool box.</li>
-<li><img class="emoji" alt="warning" src="data:image/png;base64,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" /> <strong>Assembly mode? &gt; Individual assembly</strong></li>
-<li>rnaviralSpades Scaffolds</li>
-<li>Use a reference genome: Yes. Select the NC_009942.1 fasta file previously loaded.</li>
-<li>Genomic feature positions in the reference genome &gt; NC_009942. gff file previously loaded.</li>
+<li>Search QUAST in the search tool box.</li>
+<li><strong>Assembly mode? &gt; Individual assembly (1 contig file per sample)</strong>.</li>
+<li>Contigs/scaffolds file &gt; <strong>rnaviralSpades Scaffolds</strong></li>
+<li>Use a reference genome? &gt; <strong>Yes</strong>. Select the <strong>NC_009942.1 FASTA file</strong> previously loaded.</li>
+<li>Genomic feature positions in the reference genome &gt; <strong>NC_009942. GFF file</strong> previously loaded.</li>
 </ol>
 <p align="center"><img src="images/quast_params1.png" alt="quast params" width="900"></p>
 <p align="center"><img src="images/quast_params2.png" alt="quast params" width="900"></p>
-<ol start="5">
+<ol start="6">
 <li>
-<p>Click the :eye: icon Quast HTML report.</p>
+<p><strong>Run Tool</strong>.</p>
+</li>
+<li>
+<p>Click on the eye icon of the <strong>QUAST HTML report</strong>.</p>
  <details>
  <summary>How much of or reference genome have we reconstructed?</summary>
- </br>
- Genome fraction: 98.576%
+ <b>Genome fraction: 98.576%</b>
  </details>
  <details>
  <summary>How many contigs do we have greater than 1000 pb?</summary>
- </br>
- 1
+ <b>1</b>
  </details>
  <details>
  <summary>How long is the largest contig in the assembly?</summary>
- </br>
- 11615 (only one contig)
+ <b>11615 (only one contig)</b>
  </details>
  <details>
- <summary>Which is the N50?</summary
- </br>
-     11615
+ <summary>Which is the N50?</summary>
+ <b>11615</b>
  </details>
 </li>
 <li>
-<p>Open the Icarus viewer in the quast report.</p>
+<p>Open the <strong>Icarus</strong> viewer in the quast report.</p>
 </li>
 </ol>
 <p align="center"><img src="images/icarus.png" alt="quast params" width="400"></p>
 <details>
  <summary>How did the contig align against our reference genome?</summary>
- </br>
- unchecked misassembled blocks
+ <b>Misassembled blocks.</b>
 </details>
+<br>
 <blockquote>
-<p>This training history is available at: https://usegalaxy.eu/u/s.varona/h/illumina-assembly-101-tutorial</p>
+<p><strong>This training history is available at</strong>: https://usegalaxy.eu/u/s.varona/h/illumina-assembly-101-tutorial</p>
 </blockquote>
 
 </body>
