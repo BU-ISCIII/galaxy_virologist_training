@@ -34,7 +34,7 @@ The material includes slides with theory concepts and a bunch of practical exerc
 
 ### Day 1
 
-- **Talk 1:** [Uso de la secuenciación masiva en virología](slides/curso_galaxy.virus_session1.1_introduccion.pdf)
+- **Talk 1:** [Uso de la secuenciación masiva en virología](slides/20251103_4ED_curso_galaxy.virus_session1.1_Introduccion_ICuesta.pdf)
 - **Talk 2:** [Introducción teórica a Galaxy](slides/galaxy_virus_dia1.2_introducción_galaxy.pdf)
 - [**Exercise 1**](exercises/01_introduction_to_galaxy.md) -- [Download pdf](exercises/01_introduction_to_galaxy.pdf)
 
