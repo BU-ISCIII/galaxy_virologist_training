@@ -41,7 +41,7 @@ The material includes slides with theory concepts and a bunch of practical exerc
 ### Day 2
 
 - **Talk 3:** [Análisis de calidad y preprocesamiento de los datos genómicos](slides/curso_ViralGalaxy_quality_assesment.pdf)
-- **Talk 4:** [Ensamblado de genomas](slides/curso_galaxy.virus_session2.3_assembly.pdf)
+- **Talk 4:** [Ensamblado de genomas](slides/20251104_4ED_curso_galaxy.virus_session2.3_assembly_ICuesta.pdf)
 - [**Exercise 2**](exercises/02_quality.md) -- [Download pdf](exercises/02_quality.pdf)
 - [**Exercise 3**](exercises/03_assembly_illumina.md) -- [Download pdf](exercises/03_assembly_illumina.pdf)
 - [**Exercise 4**](exercises/04_assembly_nanopore.md) -- [Download pdf](exercises/04_assembly_nanopore.pdf)
