@@ -60,7 +60,7 @@ The material includes slides with theory concepts and a bunch of practical exerc
 
 ### Day 4
 
-- **Talk 7:** [Anotación](slides/curso_galaxy_annotation.pdf)
+- **Talk 7:** [Anotación](slides/20251106_4ED_curso_galaxy.virus_session4.1_annotation_ICuesta.pdf)
 - **Talk 8:** [Viralrecon](slides/08_viralrecon.pdf)
 - [**Exercise 8**](exercises/08_anotation.md) -- [Download pdf](exercises/08_anotation.pdf)
 
