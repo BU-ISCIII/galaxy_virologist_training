@@ -34,14 +34,14 @@ The material includes slides with theory concepts and a bunch of practical exerc
 
 ### Day 1
 
-- **Talk 1:** [Uso de la secuenciación masiva en virología](20261026_5ED_curso_galaxy.virus_session1.1_Introduccion_ICuesta.pdf)
+- **Talk 1:** [Uso de la secuenciación masiva en virología](slides/20261026_5ED_curso_galaxy.virus_session1.1_Introduccion_ICuesta.pdf)
 - **Talk 2:** [Introducción teórica a Galaxy](slides/galaxy_virus_dia1.2_introducción_galaxy.pdf)
 - [**Exercise 1**](exercises/01_introduction_to_galaxy.md) -- [Download pdf](exercises/01_introduction_to_galaxy.pdf)
 
 ### Day 2
 
 - **Talk 3:** [Análisis de calidad y preprocesamiento de los datos genómicos](slides/curso_ViralGalaxy_quality_assesment.pdf)
-- **Talk 4:** [Ensamblado de genomas](20261027_5ED_curso_galaxy.virus_session2.2_assembly_ICuesta.pdf)
+- **Talk 4:** [Ensamblado de genomas](slides/20261027_5ED_curso_galaxy.virus_session2.2_assembly_ICuesta.pdf)
 - [**Exercise 2**](exercises/02_quality.md) -- [Download pdf](exercises/02_quality.pdf)
 - [**Exercise 3**](exercises/03_assembly_illumina.md) -- [Download pdf](exercises/03_assembly_illumina.pdf)
 - [**Exercise 4**](exercises/04_assembly_nanopore.md) -- [Download pdf](exercises/04_assembly_nanopore.pdf)
