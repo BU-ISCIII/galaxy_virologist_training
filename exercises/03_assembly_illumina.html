@@ -1,22 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>03_assembly_illumina.md</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-
-<style>
-/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
-/*---------------------------------------------------------------------------------------------
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Analysis of viral genomes using the Galaxy platform</title><style>/*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-body {
-	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
-	font-size: var(--vscode-markdown-font-size, 14px);
+html, body {
+	font-family: var(--markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", system-ui, "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--markdown-font-size, 14px);
 	padding: 0 26px;
-	line-height: var(--vscode-markdown-line-height, 22px);
+	line-height: var(--markdown-line-height, 22px);
 	word-wrap: break-word;
+}
+
+body {
+	padding-top: 1em;
+}
+
+/* Reset margin top for elements */
+h1, h2, h3, h4, h5, h6,
+p, ol, ul, pre {
+	margin-top: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 600;
+	margin-top: 24px;
+	margin-bottom: 16px;
+	line-height: 1.25;
 }
 
 #code-csp-warning {
@@ -48,14 +57,208 @@ body.showEditorSelection .code-line {
 	position: relative;
 }
 
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
+.code-line-diff {
+	border-radius: 2px;
+	box-shadow: -4px 0 0 transparent;
+}
+
+.code-line-diff-added {
+	background-color: var(--vscode-diffEditor-insertedTextBackground);
+	box-shadow: -4px 0 0 var(--vscode-diffEditorGutter-insertedLineBackground);
+}
+
+.code-line-diff-deleted {
+	background-color: var(--vscode-diffEditor-removedTextBackground);
+	box-shadow: -4px 0 0 var(--vscode-diffEditorGutter-removedLineBackground);
+}
+
+.vscode-high-contrast .code-line-diff-added {
+	outline: 1px solid var(--vscode-diffEditor-insertedTextBorder);
+}
+
+.vscode-high-contrast .code-line-diff-deleted {
+	outline: 1px solid var(--vscode-diffEditor-removedTextBorder);
+}
+
+::highlight(diff-inner-added) {
+	background-color: var(--vscode-diffEditor-insertedTextBackground);
+}
+
+::highlight(diff-inner-deleted) {
+	background-color: var(--vscode-diffEditor-removedTextBackground);
+}
+
+/* Hide the empty marker spans so they don't affect layout */
+[data-diff-start],
+[data-diff-end] {
+	display: contents;
+}
+
+/* Change indicator — shown where lines were deleted or modified */
+.diff-change-indicator {
+	position: relative;
+	height: 4px;
+	overflow: visible;
+	z-index: 1;
+}
+
+/* Single visual element for the entire arrow + bar shape (avoids transparent color overlap) */
+.diff-change-indicator::before {
+	content: "";
+	position: absolute;
+	top: -4px;
+	left: -12px;
+	right: 0;
+	height: 12px;
+	background-color: var(--vscode-diffEditorGutter-removedLineBackground, var(--vscode-diffEditor-removedTextBackground));
+	clip-path: polygon(
+		0px 0px,
+		4px 4px,
+		100% 4px,
+		100% 8px,
+		4px 8px,
+		0px 12px
+	);
+	pointer-events: none;
+}
+
+/* Transparent hover target over the gutter arrow area */
+.diff-change-indicator-arrow {
+	display: block;
+	position: absolute;
+	top: -4px;
+	left: -12px;
+	width: 12px;
+	height: 12px;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.diff-change-indicator-arrow:hover > .diff-change-indicator-tooltip,
+.diff-change-indicator-arrow > .diff-change-indicator-tooltip:hover {
+	display: block;
+}
+
+.diff-change-indicator-arrow > .diff-change-indicator-tooltip {
+	left: 8px;
+	top: 100%;
+	right: auto;
+	width: max-content;
+	max-width: 80vw;
+}
+
+/* Modified lines override the left gutter bar color */
+.code-line-diff-modified.code-line-diff-added {
+	box-shadow: none;
+}
+
+/* Modification indicator uses a subtler style placed after the changed block */
+.diff-change-indicator-modification {
+	height: 2px;
+	background: repeating-linear-gradient(
+		90deg,
+		var(--vscode-diffEditorGutter-removedLineBackground, var(--vscode-diffEditor-removedTextBackground)) 0px,
+		var(--vscode-diffEditorGutter-removedLineBackground, var(--vscode-diffEditor-removedTextBackground)) 4px,
+		transparent 4px,
+		transparent 8px
+	);
+}
+
+.diff-change-indicator-modification .diff-change-indicator-arrow {
+	background: inherit;
+}
+
+/* Left gutter bar for modification blocks */
+.diff-modification-gutter {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -12px;
+	width: 4px;
+	z-index: 5;
+	background-color: var(--vscode-editorGutter-modifiedBackground, #1b81a8);
+	cursor: pointer;
+}
+
+.diff-modification-gutter:hover > .diff-change-indicator-tooltip,
+.diff-modification-gutter > .diff-change-indicator-tooltip:hover {
+	display: block;
+}
+
+.diff-modification-gutter > .diff-change-indicator-tooltip {
+	left: 4px;
+	top: 0;
+	right: auto;
+	width: max-content;
+	max-width: 80vw;
+}
+
+.diff-change-indicator-tooltip {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 10;
+	background-color: var(--vscode-editor-background);
+	border: 1px solid var(--vscode-editorWidget-border, var(--vscode-contrastBorder, rgba(127, 127, 127, 0.35)));
+	border-radius: 3px;
+	max-height: min(400px, 80vh);
+	overflow-y: auto;
+	overflow-x: hidden;
+	overscroll-behavior: contain;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.diff-change-indicator-tooltip pre {
+	margin: 0;
+	font-size: 0.9em;
+	background: transparent;
+	border: 0;
+	white-space: pre-wrap;
+	word-break: break-word;
+	color: var(--vscode-editor-foreground);
+}
+
+.diff-tooltip-deleted {
+	background-color: var(--vscode-diffEditor-removedTextBackground);
+	border-left: 4px solid var(--vscode-diffEditorGutter-removedLineBackground, var(--vscode-diffEditor-removedTextBackground));
+	padding: 2px 6px;
+}
+
+.diff-tooltip-added {
+	background-color: var(--vscode-diffEditor-insertedTextBackground);
+	border-left: 4px solid var(--vscode-diffEditorGutter-insertedLineBackground, var(--vscode-diffEditor-insertedTextBackground));
+	padding: 2px 6px;
+}
+
+.diff-tooltip-inner-deleted,
+.diff-tooltip-inner-added {
+	box-decoration-break: clone;
+}
+
+.diff-tooltip-inner-deleted {
+	background-color: var(--vscode-diffEditor-removedTextBackground);
+	text-decoration: line-through;
+	text-decoration-color: var(--vscode-editor-foreground);
+}
+
+.diff-tooltip-inner-added {
+	background-color: var(--vscode-diffEditor-insertedTextBackground);
+}
+
+body.showEditorSelection :not(tr,ul,ol).code-active-line:before,
+body.showEditorSelection :not(tr,ul,ol).code-line:hover:before {
 	content: "";
 	display: block;
 	position: absolute;
 	top: 0;
 	left: -12px;
 	height: 100%;
+}
+
+.vscode-high-contrast.showEditorSelection  :not(tr,ul,ol).code-line .code-line:hover:before {
+	border-left: none;
 }
 
 body.showEditorSelection li.code-active-line:before,
@@ -71,20 +274,12 @@ body.showEditorSelection li.code-line:hover:before {
 	border-left: 3px solid rgba(0, 0, 0, 0.40);
 }
 
-.vscode-light.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
 .vscode-dark.showEditorSelection .code-active-line:before {
 	border-left: 3px solid rgba(255, 255, 255, 0.4);
 }
 
 .vscode-dark.showEditorSelection .code-line:hover:before {
 	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
-
-.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
 }
 
 .vscode-high-contrast.showEditorSelection .code-active-line:before {
@@ -95,11 +290,20 @@ body.showEditorSelection li.code-line:hover:before {
 	border-left: 3px solid rgba(255, 160, 0, 1);
 }
 
-.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
+/* Prevent `sub` and `sup` elements from affecting line height */
+sub,
+sup {
+	line-height: 0;
 }
 
-img {
+ul ul:first-child,
+ul ol:first-child,
+ol ul:first-child,
+ol ol:first-child {
+	margin-bottom: 0;
+}
+
+img, video {
 	max-width: 100%;
 	max-height: 100%;
 }
@@ -120,36 +324,68 @@ textarea:focus {
 	outline-offset: -1px;
 }
 
+p {
+	margin-bottom: 16px;
+}
+
+li p {
+	margin-bottom: 0.7em;
+}
+
+ul,
+ol {
+	margin-bottom: 0.7em;
+}
+
 hr {
 	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
+	height: 1px;
+	border-bottom: 1px solid;
 }
 
 h1 {
+	font-size: 2em;
+	margin-top: 0;
 	padding-bottom: 0.3em;
-	line-height: 1.2;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 }
 
-h1, h2, h3 {
-	font-weight: normal;
+h2 {
+	font-size: 1.5em;
+	padding-bottom: 0.3em;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h3 {
+	font-size: 1.25em;
+}
+
+h4 {
+	font-size: 1em;
+}
+
+h5 {
+	font-size: 0.875em;
+}
+
+h6 {
+	font-size: 0.85em;
 }
 
 table {
 	border-collapse: collapse;
+	margin-bottom: 0.7em;
 }
 
-table > thead > tr > th {
+th {
 	text-align: left;
 	border-bottom: 1px solid;
 }
 
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
+th,
+td {
 	padding: 5px 10px;
 }
 
@@ -158,14 +394,15 @@ table > tbody > tr + tr > td {
 }
 
 blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
+	margin: 0;
+	padding: 0px 16px 0 10px;
 	border-left-width: 5px;
 	border-left-style: solid;
+	border-radius: 2px;
 }
 
 code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-family: var(--vscode-editor-font-family, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace);
 	font-size: 1em;
 	line-height: 1.357em;
 }
@@ -182,115 +419,204 @@ pre.hljs code > div {
 }
 
 pre code {
+	display: inline-block;
 	color: var(--vscode-editor-foreground);
 	tab-size: 4;
+	background: none;
 }
 
 /** Theming */
 
-.vscode-light pre {
-	background-color: rgba(220, 220, 220, 0.4);
+pre {
+	position: relative;
+	background-color: var(--vscode-textCodeBlock-background);
+	border: 1px solid var(--vscode-widget-border);
 }
 
-.vscode-dark pre {
-	background-color: rgba(10, 10, 10, 0.4);
+/* Code block copy button */
+.code-block-copy-button {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 1px solid var(--vscode-widget-border, rgba(127, 127, 127, 0.35));
+	border-radius: 4px;
+	background-color: var(--vscode-textCodeBlock-background, var(--vscode-editor-background));
+	color: var(--vscode-editor-foreground);
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.15s ease;
 }
 
-.vscode-high-contrast pre {
-	background-color: rgb(0, 0, 0);
+pre:hover > .code-block-copy-button,
+.code-block-copy-button:focus {
+	opacity: 1;
+}
+
+.code-block-copy-button:hover {
+	background-color: var(--vscode-toolbar-hoverBackground, rgba(90, 93, 94, 0.31));
+}
+
+.code-block-copy-button:active {
+	background-color: var(--vscode-toolbar-activeBackground, rgba(99, 102, 103, 0.31));
+}
+
+.code-block-copy-button.copied {
+	color: var(--vscode-testing-iconPassed, #73c991);
+	opacity: 1;
 }
 
 .vscode-high-contrast h1 {
 	border-color: rgb(0, 0, 0);
 }
 
-.vscode-light table > thead > tr > th {
+.vscode-light th {
 	border-color: rgba(0, 0, 0, 0.69);
 }
 
-.vscode-dark table > thead > tr > th {
+.vscode-dark th {
 	border-color: rgba(255, 255, 255, 0.69);
 }
 
 .vscode-light h1,
+.vscode-light h2,
 .vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
+.vscode-light td {
 	border-color: rgba(0, 0, 0, 0.18);
 }
 
 .vscode-dark h1,
+.vscode-dark h2,
 .vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
+.vscode-dark td {
 	border-color: rgba(255, 255, 255, 0.18);
 }
 
-</style>
+/* Frontmatter rendering */
+table.frontmatter {
+	margin-bottom: 16px;
+	border-collapse: collapse;
+}
 
-<style>
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+table.frontmatter th,
+table.frontmatter td {
+	padding: 6px 13px;
+	border: 1px solid var(--vscode-widget-border, rgba(127, 127, 127, 0.35));
+	text-align: left;
+	vertical-align: top;
+}
 
-/* Tomorrow Comment */
+table.frontmatter th {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+table.frontmatter td > ul {
+	margin: 0;
+	padding-left: 1.2em;
+}
+
+pre.frontmatter {
+	margin-bottom: 16px;
+}
+
+.frontmatter-error {
+	margin-bottom: 16px;
+	padding: 8px 13px;
+	border-left: 4px solid var(--vscode-editorError-foreground, #f48771);
+	background: var(--vscode-inputValidation-errorBackground, rgba(244, 135, 113, 0.1));
+	color: var(--vscode-editorError-foreground, #f48771);
+}
+
+.frontmatter-error pre {
+	margin: 6px 0 0;
+	white-space: pre-wrap;
+	color: inherit;
+	background: transparent;
+	padding: 0;
+}
+</style><style>/*
+https://raw.githubusercontent.com/isagalaev/highlight.js/master/src/styles/vs2015.css
+*/
+/*
+ * Visual Studio 2015 dark style
+ * Author: Nicolas LLOBERA <nllobera@gmail.com>
+ */
+
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-symbol,
+.hljs-name {
+	color: #569CD6;
+}
+.hljs-link {
+	color: #569CD6;
+	text-decoration: underline;
+}
+
+.hljs-built_in,
+.hljs-type {
+	color: #4EC9B0;
+}
+
+.hljs-number,
+.hljs-class {
+	color: #B8D7A3;
+}
+
+.hljs-string,
+.hljs-meta-string {
+	color: #D69D85;
+}
+
+.hljs-regexp,
+.hljs-template-tag {
+	color: #9A5334;
+}
+
+.hljs-subst,
+.hljs-function,
+.hljs-title,
+.hljs-params,
+.hljs-formula {
+	color: #DCDCDC;
+}
+
 .hljs-comment,
 .hljs-quote {
-	color: #8e908c;
+	color: #57A64A;
+	font-style: italic;
 }
 
-/* Tomorrow Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-	color: #c82829;
+.hljs-doctag {
+	color: #608B4E;
 }
 
-/* Tomorrow Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
 .hljs-meta,
-.hljs-link {
-	color: #f5871f;
+.hljs-meta-keyword,
+.hljs-tag {
+	color: #9B9B9B;
 }
 
-/* Tomorrow Yellow */
-.hljs-attribute {
-	color: #eab700;
+.hljs-variable,
+.hljs-template-variable {
+	color: #BD63C5;
 }
 
-/* Tomorrow Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-	color: #718c00;
+.hljs-attr,
+.hljs-attribute,
+.hljs-builtin-name {
+	color: #9CDCFE;
 }
 
-/* Tomorrow Blue */
-.hljs-title,
 .hljs-section {
-	color: #4271ae;
-}
-
-/* Tomorrow Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-	color: #8959a8;
-}
-
-.hljs {
-	display: block;
-	overflow-x: auto;
-	color: #4d4d4c;
-	padding: 0.5em;
+	color: gold;
 }
 
 .hljs-emphasis {
@@ -300,72 +626,508 @@ pre code {
 .hljs-strong {
 	font-weight: bold;
 }
-</style>
 
-<style>
+/*.hljs-code {
+	font-family:'Monospace';
+}*/
+
+.hljs-bullet,
+.hljs-selector-tag,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+	color: #D7BA7D;
+}
+
+.hljs-addition {
+	background-color: var(--vscode-diffEditor-insertedTextBackground, rgba(155, 185, 85, 0.2));
+	color: rgb(155, 185, 85);
+	display: inline-block;
+	width: 100%;
+}
+
+.hljs-deletion {
+	background: var(--vscode-diffEditor-removedTextBackground, rgba(255, 0, 0, 0.2));
+	color: rgb(255, 0, 0);
+	display: inline-block;
+	width: 100%;
+}
+
+
 /*
- * Markdown PDF CSS
- */
+From https://raw.githubusercontent.com/isagalaev/highlight.js/master/src/styles/vs.css
+*/
+/*
 
- body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
-	padding: 0 12px;
+Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name>
+
+*/
+
+.vscode-light .hljs-function,
+.vscode-light .hljs-params,
+.vscode-light .hljs-number,
+.vscode-light .hljs-class  {
+	color: inherit;
 }
 
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #cccccc;
-	border-radius: 3px;
-	overflow-x: auto;
-	white-space: pre-wrap;
-	overflow-wrap: break-word;
+.vscode-light .hljs-comment,
+.vscode-light .hljs-quote,
+.vscode-light .hljs-number,
+.vscode-light .hljs-class,
+.vscode-light .hljs-variable {
+	color: #008000;
 }
 
-pre:not(.hljs) {
-	padding: 23px;
-	line-height: 19px;
+.vscode-light .hljs-keyword,
+.vscode-light .hljs-selector-tag,
+.vscode-light .hljs-name,
+.vscode-light .hljs-tag {
+	color: #00f;
 }
 
-blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
+.vscode-light .hljs-built_in,
+.vscode-light .hljs-builtin-name {
+	color: #007acc;
 }
 
-.emoji {
-	height: 1.4em;
+.vscode-light .hljs-string,
+.vscode-light .hljs-section,
+.vscode-light .hljs-attribute,
+.vscode-light .hljs-literal,
+.vscode-light .hljs-template-tag,
+.vscode-light .hljs-template-variable,
+.vscode-light .hljs-type {
+	color: #a31515;
 }
 
-code {
-	font-size: 14px;
-	line-height: 19px;
+.vscode-light .hljs-subst,
+.vscode-light .hljs-selector-attr,
+.vscode-light .hljs-selector-pseudo,
+.vscode-light .hljs-meta,
+.vscode-light .hljs-meta-keyword {
+	color: #2b91af;
+}
+.vscode-light .hljs-title,
+.vscode-light .hljs-doctag {
+	color: #808080;
 }
 
-/* for inline code */
-:not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
-	font-size: inherit;
+.vscode-light .hljs-attr {
+	color: #f00;
 }
 
-/* Page Break : use <div class="page"/> to insert page break
--------------------------------------------------------- */
-.page {
-	page-break-after: always;
+.vscode-light .hljs-symbol,
+.vscode-light .hljs-bullet,
+.vscode-light .hljs-link {
+	color: #00b0e8;
 }
 
-</style>
 
-<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-</head>
-<body>
-  <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
-          ? 'dark'
-          : 'default'
-    });
-  </script>
-<h1 id="galaxy-for-virologist-training-exercise-3-illumina-assembly-101">Galaxy for virologist training. Exercise 3: Illumina Assembly 101</h1>
+.vscode-light .hljs-emphasis {
+	font-style: italic;
+}
+
+.vscode-light .hljs-strong {
+	font-weight: bold;
+}
+</style><style>/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+</style><style>/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.katex-error {
+	color: var(--vscode-editorError-foreground);
+}
+</style><style>@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Material Icons"), local("MaterialIcons-Regular"), url("data:application/x-font-woff;charset=utf-8;base64,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") format("woff");
+}
+
+.admonition {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12), 0 3px 1px -2px rgba(0, 0, 0, .2);
+  position: relative;
+  margin: 1.5625em 0;
+  padding: 0 1.2rem;
+  border-left: .4rem solid rgba(68, 138, 255, .8);
+  border-radius: .2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  overflow: auto;
+}
+
+.admonition>p {
+  margin-top: .8rem;
+}
+
+.admonition>.admonition-title {
+  margin: 0 -1.2rem;
+  padding: .8rem 1.2rem .8rem 3.6rem;
+  border-bottom: 1px solid rgba(68, 138, 255, .2);
+  background-color: rgba(68, 138, 255, .1);
+  font-weight: 700;
+}
+
+.admonition>.admonition-title:before {
+  position: absolute;
+  left: 1.2rem;
+  font-size: 1.5rem;
+  color: rgba(68, 138, 255, .8);
+  content: "\E3C9";
+}
+
+.admonition>.admonition-title:before {
+  font-family: Material Icons;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 2rem;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+}
+
+.admonition.summary,
+.admonition.abstract,
+.admonition.tldr {
+  border-left-color: rgba(0, 176, 255, .8);
+}
+
+.admonition.summary>.admonition-title,
+.admonition.abstract>.admonition-title,
+.admonition.tldr>.admonition-title {
+  background-color: rgba(0, 176, 255, .1);
+  border-bottom-color: rgba(0, 176, 255, .2);
+}
+
+.admonition.summary>.admonition-title:before,
+.admonition.abstract>.admonition-title:before,
+.admonition.tldr>.admonition-title:before {
+  color: rgba(0, 176, 255, 1);
+  ;
+  content: "\E8D2";
+}
+
+.admonition.hint,
+.admonition.tip {
+  border-left-color: rgba(0, 191, 165, .8);
+}
+
+.admonition.hint>.admonition-title,
+.admonition.tip>.admonition-title {
+  background-color: rgba(0, 191, 165, .1);
+  border-bottom-color: rgba(0, 191, 165, .2);
+}
+
+.admonition.hint>.admonition-title:before,
+.admonition.tip>.admonition-title:before {
+  color: rgba(0, 191, 165, 1);
+  content: "\E80E";
+}
+
+.admonition.info,
+.admonition.todo {
+  border-left-color: rgba(0, 184, 212, .8);
+}
+
+.admonition.info>.admonition-title,
+.admonition.todo>.admonition-title {
+  background-color: rgba(0, 184, 212, .1);
+  border-bottom-color: rgba(0, 184, 212, .2);
+}
+
+.admonition.info>.admonition-title:before,
+.admonition.todo>.admonition-title:before {
+  color: rgba(0, 184, 212, 1);
+  ;
+  content: "\E88E";
+}
+
+.admonition.success,
+.admonition.check,
+.admonition.done {
+  border-left-color: rgba(0, 200, 83, .8);
+}
+
+.admonition.success>.admonition-title,
+.admonition.check>.admonition-title,
+.admonition.done>.admonition-title {
+  background-color: rgba(0, 200, 83, .1);
+  border-bottom-color: rgba(0, 200, 83, .2);
+}
+
+.admonition.success>.admonition-title:before,
+.admonition.check>.admonition-title:before,
+.admonition.done>.admonition-title:before {
+  color: rgba(0, 200, 83, 1);
+  ;
+  content: "\E876";
+}
+
+.admonition.question,
+.admonition.help,
+.admonition.faq {
+  border-left-color: rgba(100, 221, 23, .8);
+}
+
+.admonition.question>.admonition-title,
+.admonition.help>.admonition-title,
+.admonition.faq>.admonition-title {
+  background-color: rgba(100, 221, 23, .1);
+  border-bottom-color: rgba(100, 221, 23, .2);
+}
+
+.admonition.question>.admonition-title:before,
+.admonition.help>.admonition-title:before,
+.admonition.faq>.admonition-title:before {
+  color: rgba(100, 221, 23, 1);
+  ;
+  content: "\E887";
+}
+
+.admonition.warning,
+.admonition.attention,
+.admonition.caution {
+  border-left-color: rgba(255, 145, 0, .8);
+}
+
+.admonition.warning>.admonition-title,
+.admonition.attention>.admonition-title,
+.admonition.caution>.admonition-title {
+  background-color: rgba(255, 145, 0, .1);
+  border-bottom-color: rgba(255, 145, 0, .2);
+}
+
+.admonition.attention>.admonition-title:before {
+  color: rgba(255, 145, 0, 1);
+  content: "\E417";
+}
+
+.admonition.warning>.admonition-title:before,
+.admonition.caution>.admonition-title:before {
+  color: rgba(255, 145, 0, 1);
+  content: "\E002";
+}
+
+.admonition.failure,
+.admonition.fail,
+.admonition.missing {
+  border-left-color: rgba(255, 82, 82, .8);
+}
+
+.admonition.failure>.admonition-title,
+.admonition.fail>.admonition-title,
+.admonition.missing>.admonition-title {
+  background-color: rgba(255, 82, 82, .1);
+  border-bottom-color: rgba(255, 82, 82, .2);
+}
+
+.admonition.failure>.admonition-title:before,
+.admonition.fail>.admonition-title:before,
+.admonition.missing>.admonition-title:before {
+  color: rgba(255, 82, 82, 1);
+  ;
+  content: "\E14C";
+}
+
+.admonition.danger,
+.admonition.error,
+.admonition.bug {
+  border-left-color: rgba(255, 23, 68, .8);
+}
+
+.admonition.danger>.admonition-title,
+.admonition.error>.admonition-title,
+.admonition.bug>.admonition-title {
+  background-color: rgba(255, 23, 68, .1);
+  border-bottom-color: rgba(255, 23, 68, .2);
+}
+
+.admonition.danger>.admonition-title:before {
+  color: rgba(255, 23, 68, 1);
+  content: "\E3E7";
+}
+
+.admonition.error>.admonition-title:before {
+  color: rgba(255, 23, 68, 1);
+  content: "\E14C";
+}
+
+.admonition.bug>.admonition-title:before {
+  color: rgba(255, 23, 68, 1);
+  content: "\E868";
+}
+
+.admonition.example,
+.admonition.snippet {
+  border-left-color: rgba(0, 184, 212, .8);
+}
+
+.admonition.example>.admonition-title,
+.admonition.snippet>.admonition-title {
+  background-color: rgba(0, 184, 212, .1);
+  border-bottom-color: rgba(0, 184, 212, .2);
+}
+
+.admonition.example>.admonition-title:before,
+.admonition.snippet>.admonition-title:before {
+  color: rgba(0, 184, 212, 1);
+  ;
+  content: "\E242";
+}
+
+.admonition.quote,
+.admonition.cite {
+  border-left-color: rgba(158, 158, 158, .8);
+}
+
+.admonition.quote>.admonition-title,
+.admonition.cite>.admonition-title {
+  background-color: rgba(158, 158, 158, .1);
+  border-bottom-color: rgba(158, 158, 158, .2);
+}
+
+.admonition.quote>.admonition-title:before,
+.admonition.cite>.admonition-title:before {
+  color: rgba(158, 158, 158, 1);
+  ;
+  content: "\E244";
+}</style><style>.vscode-light kbd,
+.vscode-dark kbd,
+.vscode-high-contrast kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  vertical-align: middle;
+  border: solid 1px #d1d5da;
+  border-bottom-color: #c6cbd1;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #c6cbd1;
+}
+
+.vscode-light kbd {
+  color: #444d56;
+  background-color: #fafbfc;
+}</style><style>.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}</style><style>:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+</style><style>@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+</style><style>.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+</style><style>
+.mermaid-diagram { margin: 1em 0; text-align: center; break-inside: avoid; }
+.mermaid-diagram svg { max-width: 100%; height: auto; }
+img { max-width: 100%; break-inside: avoid; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+.task-list-item { list-style-type: none; }
+.task-list-item-checkbox { margin: 0 0.2em 0.25em -1.4em; vertical-align: middle; }
+</style><style>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif; font-size: 14px; line-height: 1.6; }</style></head><body class="vscode-body vscode-light">
+				<h1 id="analysis-of-viral-genomes-using-the-galaxy-platform">Analysis of viral genomes using the Galaxy platform</h1>
+<h1 id="exercise-3-illumina-assembly"><strong>Exercise 3: Illumina Assembly</strong></h1>
+
 <div class="tables-start"></div>
 <table>
 <thead>
@@ -377,11 +1139,11 @@ code {
 <tbody>
 <tr>
 <td><strong>Training dataset:</strong></td>
-<td><strong>PRJEB43037</strong> - In August 2020, an outbreak of <strong>West Nile Virus</strong> affected 71 people with meningoencephalitis in Andalusia and 6 more people in Extremadura (south-west of Spain), causing a total of eight deaths. The virus belonged to the lineage 1 and was relatively similar to previous outbreaks occurred in the Mediterranean region. Here, we present a detailed analysis of the outbreak, including an extensive phylogenetic study. This is one of the outbreak samples.</td>
+<td><a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJEB43037/"><strong>PRJEB43037</strong></a> - In August 2020, an outbreak of <strong>West Nile Virus</strong> affected 71 people with meningoencephalitis in Andalusia and 6 more people in Extremadura (south-west of Spain), causing a total of eight deaths. The virus belonged to the lineage 1 and was relatively similar to previous outbreaks occurred in the Mediterranean region. Here, we present a detailed analysis of the outbreak, including an extensive phylogenetic study. This is one of the outbreak samples.</td>
 </tr>
 <tr>
 <td><strong>Questions:</strong></td>
-<td><ul><li>What is an assembly?</li><li>How can I evaluate my assembly?</li></ul></td>
+<td><ul><li>What is an assembly?</li><li>How can we evaluate our assembly?</li></ul></td>
 </tr>
 <tr>
 <td><strong>Objectives</strong>:</td>
@@ -393,113 +1155,146 @@ code {
 </tr>
 </tbody>
 </table>
+
 <div class="tables-end"></div>
 <h2 id="1-description"><strong>1. Description</strong></h2>
-<p>Sometimes, we don't have a reference genome to map our reads against, or we want to reconstruct a genome without any possible bias caused by a reference. In such cases, we need to do a <em><strong>de novo assembly</strong></em>. This type of analysis tries to reconstruct the original genome without any templates, using only the reads themselves.
-Some considerations to consider beforehand:</p>
+<p>Sometimes, we don't have a reference genome to map our reads against, or we want to reconstruct a genome without any possible bias caused by a reference. In such cases, we need to perform <u><strong><em>de novo</em> assembly</strong></u>. This type of analysis tries to reconstruct the original genome without any templates, using only the reads themselves.
+Some considerations to take into account beforehand:</p>
 <ul>
-<li>When we assemble, the longer the reads are and the longer the size of the library fragments, the easier it is for the assembler. That's why PacBio or Nanopore are recommended for assembly. Think of it like a puzzle, the bigger the pieces, the easier it is to form the image.</li>
+<li>When we assemble, the longer the reads are and the longer the size of the library fragments, the easier it is for the assembler. That's why PacBio or Nanopore are recommended for assembly. Think of it like a puzzle: the bigger the pieces, the easier it is to form the image.</li>
 <li>It's almost imposible to reconstruct the entire genome of a large-genome microorganism with only one sequencing, although it can be done for smaller ones, like viruses.</li>
 <li>Assembly is not recommended for amplicon based libraries due to the depth of coverage unevenness and the amplicons' intrinsic bias.</li>
 </ul>
 <h2 id="2-upload-data-to-galaxy"><strong>2. Upload data to Galaxy</strong></h2>
 <h3 id="training-dataset"><strong>Training dataset</strong></h3>
 <ul>
-<li>Experiment info: PRJEB43037, WGS, Illumina MiSeq, paired-end.</li>
-<li>Fastq R1: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz">ERR5310322_1</a> - URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz</code></li>
-<li>Fastq R2: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz">ERR5310322_2</a>  URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz</code></li>
-<li>Reference genome <strong>NC_009942.1</strong>: <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz"><strong>FASTA</strong></a> -- <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.gff.gz"><strong>GFF</strong></a></li>
+<li><strong>Experiment info</strong>: <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJEB43037/"><strong>PRJEB43037</strong></a>, WGS, Illumina iSeq 100, paired-end.</li>
+<li><strong>Fastq R1</strong>: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz"><strong>ERR5310322_1</strong></a> - URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz</code></li>
+<li><strong>Fastq R2</strong>: <a href="https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz"><strong>ERR5310322_2</strong></a>  URL : <code>ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz</code></li>
+<li><strong>Reference genome</strong> <strong>NC_009942.1</strong>: <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz"><strong>FASTA</strong></a> -- <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.gff.gz"><strong>GFF</strong></a></li>
 </ul>
 <h3 id="create-new-history"><strong>Create new history</strong></h3>
 <ul>
-<li>Click the <code>+</code> icon at the top of the history panel and create a new history with the name <code>Illumina Assembly</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_4day_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history"><strong>here</strong></a>.</li>
+<li>Click on the <code>+</code> icon at the top of the history panel and create a new history with the name <code>Illumina Assembly</code> as explained <a href="https://github.com/BU-ISCIII/galaxy_virologist_training/blob/one_week_format/exercises/01_introduction_to_galaxy.md#2-galaxys-history"><strong>here</strong></a>.</li>
 </ul>
 <h3 id="upload-data"><strong>Upload data</strong></h3>
 <ul>
-<li>Import and rename the read files <code>ERR5310322_1</code> and <code>ERR5310322_2</code>
+<li>Import the read files <code>ERR5310322_1.fastq.gz</code> and <code>ERR5310322_2.fastq.gz</code>
 <ol>
 <li>Click on <strong>Upload</strong>.</li>
 <li>Click on <strong>Paste/Fetch data</strong>.</li>
-<li>Copy URL for fastq R1 (select and Ctrl+C) and paste (Ctrl+V).</li>
+<li>Copy URL for FASTQ R1 (select and Ctrl+C) and paste (Ctrl+V).</li>
 <li>Click on <strong>Start</strong>.</li>
 <li>Wait until the job finishes (green in history).</li>
-<li>Do the same for fastq R2.</li>
+<li>Do the same for FASTQ R2.</li>
 </ol>
 </li>
 </ul>
+
 <p align="center"><img src="images/upload_data_mapping.png" alt="Upload data mapping" width="900"></p>
 <ul>
-<li><strong>Rename R1 and R2 files</strong>.
-<ol>
-<li>Click on the ✏️ in the history for <code>ERR5310322_1.fastq.gz</code>.</li>
-<li>Change the name to <code>ERR5310322_1</code>.</li>
-<li>Do the same for R2.</li>
-</ol>
+<li>
+<p>You can then <strong>add tags</strong> (<code>#R1</code> &amp; <code>#R2</code>) to your reads, as we did in the preprocessing exercise.</p>
+</li>
+<li>
+<p>Import the <strong>reference genome</strong> and <strong>GFF files</strong> that will be used for assembly quality assessment at the end of the practice. You can add tags to them as well.</p>
 </li>
 </ul>
-<p align="center"><img src="images/changename1.png" alt="Change name 1" width="900"></p>    
-<ul>
-<li>Import the reference genome and GFF file.</li>
-</ul>
-<pre class="hljs"><code><div>https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz
+<pre><code class="language-bash">https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz
 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.gff.gz
-</div></code></pre>
+</code></pre>
+
 <p align="center"><img src="images/upload_data_mapping2.png" alt="Upload data mapping 2" width="900"></p>
 <ul>
-<li>Rename the reference genome and gff file.
+<li>You can rename the reference genome and GFF files if you like:
 <ol>
 <li>Click on the ✏️ for the reference file in the history.</li>
 <li>Change the name to <code>NC_009942.1</code>.</li>
 </ol>
 </li>
 </ul>
-<p align="center"><img src="images/changename2.png" alt="Change name 2" width="900"></p>    
-<ul>
-<li>Finally, add some useful tags if you like.</li>
-</ul>
-<h3 id="assemble-reads-with-spades"><strong>Assemble reads with SPAdes</strong></h3>
+
+<p align="center"><img src="images/changename2.png" alt="Change name 2" width="900"></p>
+<h2 id="3-assemble-reads-with-spades"><strong>3. Assemble reads with SPAdes</strong></h2>
 <ol>
-<li>Search <code>Spades</code> in the search tool box and select <em><strong>rnaviralSPAdes de novo assembler for transcriptomes, metatranscriptomes and metaviromes</strong></em>.</li>
+<li>Search <code>SPAdes</code> in the search tool box and select <u><strong>rnaviralSPAdes - de novo assembler for transcriptomes, metatranscriptomes and metaviromes</strong></u>.</li>
+</ol>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p><a href="https://github.com/ablab/spades"><strong>SPAdes</strong></a> is an assembler thas has multiple modes depending on the nature of the reads to be used for assembly. For instance, it has:</p>
+<ul>
+<li>metaSPAdes: assembly of metagenomic data containing sequences from multiple organisms.</li>
+<li>rnaSPAdes: transcriptome assembly from RNA-seq data.</li>
+<li>rnaviralSPAdes: assembly of RNA viral genomes from viral RNA-seq data.</li>
+<li>plasmidSPAdes and metaplasmidSPAdes: recovery of plasmids from whole-genome and metagenomic datasets, respectively.</li>
+<li>metaviralSPAdes: recovery of viral sequences from metagenomic data.</li>
+</ul>
+</div>
+<ol start="2">
 <li>Single-end or paired-end short-reads &gt; <strong>Paired-end: list of dataset pairs</strong>.</li>
 </ol>
-<blockquote>
-<p>[!WARNING]
-To be able to continue, it is necessary to first create a <strong>list of paired datasets</strong>, given our .fastq files, which will then be used for the rest of the steps of this workshop. In order to do so, we must:</p>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p>To be able to continue, it is necessary to first create a <strong>list of paired datasets</strong>, given our FASTQ files, which will then be used for the rest of the steps of this workshop. In order to do so, we must:</p>
 <ol>
-<li>Select our fastqsanger.gz files that we uploaded in the beginning, and then click on <em>2 of X selected</em>.</li>
-<li>Select <em>Advanced Build List</em>.</li>
-<li>Select the <em>List of Paired Datasets</em> box and click on <em>Next</em>.</li>
-<li>Check the auto-pairing configuration and click again on <em>Next</em>.</li>
-<li>Give a name to your list and finally click on <em>Build</em>.</li>
+<li>
+<p><strong>Select our fastqsanger.gz files that we uploaded in the beginning, and then click on <u>2 of X selected</u></strong>.</p>
+
+<p align="center"><img src="images/select_items.png" alt="select_items" width="900"></p>
+</li>
+<li>
+<p><strong>Select <u>Advanced Build List</u></strong>.</p>
+
+<p align="center"><img src="images/advanced_build_list.png" alt="advanced_build_list" width="900"></p>
+</li>
+<li>
+<p><strong>Select the <u>List of Paired Datasets</u> box and click on <em>Next</em></strong>.</p>
+
+<p align="center"><img src="images/list_of_paired_datasets.png" alt="list_of_paired_datasets" width="900"></p>
+</li>
+<li>
+<p><strong>Check the auto-pairing configuration and click again on <em>Next</em></strong>.</p>
+
+<p align="center"><img src="images/configure_auto_pairing.png" alt="configure_auto_pairing" width="900"></p>
+</li>
+<li>
+<p><strong>Give a name to your list and finally click on <em>Build</em></strong>.</p>
+
+<p align="center"><img src="images/list_identifier.png" alt="list_identifier" width="900"></p>
+</li>
 </ol>
-<p>Once this is done, you'll be able to select your list as input of SPAdes.</p>
-</blockquote>
-<ol start="3">
+<p><strong>After having done this, a list of datasets will have been generated:</strong></p>
+
+   <p align="center"><img src="images/list_of_datasets.png" alt="list_identifier" width="900"></p>
+   <p align="center"><img src="images/pair_of_datasets.png" alt="list_identifier" width="900"></p>
+<p><strong>This list will have the forward and reverse reads:</strong></p>
+
+   <p align="center"><img src="images/forward_reads.png" alt="list_identifier" width="900"></p>
+   <p align="center"><img src="images/reverse_reads.png" alt="list_identifier" width="900"></p>
+<p><strong>Once this is done, you'll be able to select your list as input of SPAdes.</strong></p>
+</div>
+<ol>
 <li>FASTQ RNA-seq file(s): collection: <strong>ERR5310322</strong></li>
 <li>Select optional output file(s) &gt; <strong>Scaffolds stats</strong> and <strong>Contigs stats</strong>, along with the options selected by default.</li>
 <li>Click on <strong>Run Tool</strong> and wait.</li>
 </ol>
+
 <p align="center"><img src="images/spades_params.png" alt="Spades params" width="900"></p>
 <p align="center"><img src="images/spades_params_2.png" alt="Spades params 2" width="900"></p>
-<blockquote>
-<p>[!WARNING]
-<strong>Assembly takes time!</strong>
-There is no such thing as Assembly in real time. It can take anywhere between 90 minutes and two hours.</p>
-</blockquote>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p><strong>Assembly takes time!</strong>
+There is no such thing as Assembly in real time. This process might take long.</p>
+</div>
 <p><strong>Questions:</strong></p>
-<p>Click on the eye icon in the history: <strong>Spades Contigs stats</strong>.
-<details>
+<p>Click on the <strong>eye icon</strong> in the history: <strong>Spades Contigs stats</strong>.
+</p><details>
 <summary>How many contigs have been assembled?</summary>
 <b>46</b>
-</details></p>
-<h3 id="assembly-quality-control-with-quast"><strong>Assembly quality control with QUAST</strong></h3>
+</details><p></p>
+<h2 id="4-assembly-quality-control-with-quast"><strong>4. Assembly quality control with QUAST</strong></h2>
 <ol>
-<li>Search QUAST in the search tool box.</li>
+<li>Search <strong>QUAST</strong> in the search tool box and select <strong>Quast - Genome assembly Quality</strong>.</li>
 <li><strong>Assembly mode? &gt; Individual assembly (1 contig file per sample)</strong>.</li>
 <li>Contigs/scaffolds file &gt; <strong>rnaviralSpades Scaffolds</strong></li>
-<li>Use a reference genome? &gt; <strong>Yes</strong>. Select the <strong>NC_009942.1 FASTA file</strong> previously loaded.</li>
-<li>Genomic feature positions in the reference genome &gt; <strong>NC_009942. GFF file</strong> previously loaded.</li>
+<li>Use a reference genome? &gt; <strong>Yes</strong>. Select the <strong>FASTA file</strong> previously loaded.</li>
+<li>Genomic feature positions in the reference genome &gt; <strong>GFF file</strong> previously loaded.</li>
 </ol>
+
 <p align="center"><img src="images/quast_params1.png" alt="quast params" width="900"></p>
 <p align="center"><img src="images/quast_params2.png" alt="quast params" width="900"></p>
 <ol start="6">
@@ -508,8 +1303,9 @@ There is no such thing as Assembly in real time. It can take anywhere between 90
 </li>
 <li>
 <p>Click on the eye icon of the <strong>QUAST HTML report</strong>.</p>
+
  <details>
- <summary>How much of or reference genome have we reconstructed?</summary>
+ <summary>How much of our reference genome have we reconstructed?</summary>
  <b>Genome fraction: 98.576%</b>
  </details>
  <details>
@@ -526,18 +1322,18 @@ There is no such thing as Assembly in real time. It can take anywhere between 90
  </details>
 </li>
 <li>
-<p>Open the <strong>Icarus</strong> viewer in the quast report.</p>
+<p>Open the <strong>Icarus</strong> viewer in the QUAST report.</p>
 </li>
 </ol>
+
 <p align="center"><img src="images/icarus.png" alt="quast params" width="400"></p>
+
 <details>
  <summary>How did the contig align against our reference genome?</summary>
- <b>Misassembled blocks.</b>
+ <b>Misassembled blocks</b>. The assembly consists of a single contig that covers about 98.6% of the reference genome, but QUAST flags it as misassembled because it reports one local misassembly (there is an overlap of &lt; 1 kb). Here, two parts of the same contig align to overlapping reference positions, meaning a ~575 bp region (positions 1,937–2,511) appears twice in the contig.
 </details>
 <br>
 <blockquote>
-<p><strong>This training history is available at</strong>: https://usegalaxy.eu/u/s.varona/h/illumina-assembly-101-tutorial</p>
+<p><strong>This training history is available at: <a href="https://usegalaxy.eu/u/s.varona/h/illumina-assembly-101-tutorial">https://usegalaxy.eu/u/s.varona/h/illumina-assembly-101-tutorial</a></strong></p>
 </blockquote>
-
-</body>
-</html>
+</body></html>
