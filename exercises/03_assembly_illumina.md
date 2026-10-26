@@ -80,28 +80,28 @@ To be able to continue, it is necessary to first create a **list of paired datas
 >
 > 1. **Select our fastqsanger.gz files that we uploaded in the beginning, and then click on _2 of X selected_**.
 >
->    <p align="center"><img src="images/select_items.png" alt="select_items" width="300"></p>
+>    <p align="left"><img src="images/select_items.png" alt="select_items" width="300"></p>
 >
 > 2. **Select _Advanced Build List_**.
 >
->    <p align="center"><img src="images/advanced_build_list.png" alt="advanced_build_list" width="250"></p>
+>    <p align="left"><img src="images/advanced_build_list.png" alt="advanced_build_list" width="250"></p>
 >
 > 3. **Select the _List of Paired Datasets_ box and click on *Next***.
 >
->    <p align="center"><img src="images/list_of_paired_datasets.png" alt="list_of_paired_datasets" width="400"></p>
+>    <p align="left"><img src="images/list_of_paired_datasets.png" alt="list_of_paired_datasets" width="400"></p>
 >
 > 4. **Check the auto-pairing configuration and click again on *Next***.
 >
->    <p align="center"><img src="images/configure_auto_pairing.png" alt="configure_auto_pairing" width="500"></p>
+>    <p align="left"><img src="images/configure_auto_pairing.png" alt="configure_auto_pairing" width="500"></p>
 >
 > 5. **Give a name to your list and finally click on *Build***.
 >
->    <p align="center"><img src="images/list_identifier.png" alt="list_identifier" width="500"></p>
+>    <p align="left"><img src="images/list_identifier.png" alt="list_identifier" width="500"></p>
 >
 > **After having done this, a list of datasets will have been generated:**
 >
->    <p align="center"><img src="images/list_of_datasets.png" alt="list_identifier" width="300"></p>
->    <p align="center"><img src="images/pair_of_datasets.png" alt="list_identifier" width="300"></p>
+>    <p align="left"><img src="images/list_of_datasets.png" alt="list_identifier" width="300"></p>
+>    <p align="left"><img src="images/pair_of_datasets.png" alt="list_identifier" width="300"></p>
 >
 > **This list will have the forward and reverse reads:**
 >
