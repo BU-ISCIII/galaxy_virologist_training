@@ -57,44 +57,41 @@ Follow instructions [here](07_variant_calling_illumina.md#5-variant-calling)
 
 1. Search `snpeff build` in the search toolbox.
 2. Select ` SnpEff build: database from Genbank or GFF record`
-3. Select the version icon (three boxes)
-4. Select the version `4.3+T.galaxy6`
-5. Name of the database: WestNile.
-6. Input annotations are in: GFF
-7. GFF dataset to build database from: NC_009942.1 gff
-8. Choose the source for the reference genome > History
-9. Genome in FASTA format > NC_009942.1 fasta.
-10. Click `Run tool`.
+3. Name of the database: WestNile.
+4. Input annotations are in: GFF
+5. GFF dataset to build database from: GCF_000875385.1_ViralProj30293_genomic.gff.gz (NC_009942.1 gff)
+6. Choose the source for the reference genome > History
+7. Genome in FASTA format > GCF_000875385.1_ViralProj30293_genomic.fna.gz (NC_009942.1 fasta)
+8. Click `Run tool`.
 
-<p align="center"><img src="images/snpeff_build_params1.png" alt="snpeff build" width="500"></p>
-<p align="center"><img src="images/snpeff_build_params2.png" alt="snpeff build" width="500"></p>
+<p align="center"><img src="images/snpeff_build_params1.png" alt="snpeff build" width="800"></p>
 
 ### Snpeff eff
 
 1. Search `snpeff eff` in the search toolbox.
 2. Select `SnpEff eff: annotate variants`
-3. Select the version icon (three boxes)
-4. Select the version `4.3+T.galaxy2`
-5. Sequence changes (SNPs, MNPs, InDels): ivar vcf file
-6. Create CSV report, useful for downstream analysis (-csvStats): Yes.
-7. Genome source: Custom snpEff database in your history. 
-8. SnpEff4.3 Genome Data > Snpeff build output.
-9. Click `Run tool` and wait.
+3. Select `Data Set Collection`
+4. Sequence changes (SNPs, MNPs, InDels): `ivar variants VCF on collection` file
+5. Create CSV report, useful for downstream analysis (-csvStats): Yes.
+6. Genome source: Custom snpEff database in your history. 
+7. SnpEff4.3 Genome Data > Snpeff build output.
+8. Click `Run tool` and wait.
 
-<p align="center"><img src="images/snpeff_eff_params1.png" alt="snpeff eff" width="500"></p>
-<p align="center"><img src="images/snpeff_eff_params2.png" alt="snpeff eff" width="500"></p>
+<p align="center"><img src="images/snpeff_eff_params1.png" alt="snpeff eff" width="800"></p>
 
 6. Click the :eye: icon in the SnpEff html output and check the results.
 
 ### SnpSift: transfrom vcf snpeff to table.
 
 1. Search `SnpSift ExtractFields` in the search toolbox.
-2. Variant input file in VCF format: snpeff eff vcf output.
-3. Fields to extract: `CHROM POS ID REF ALT FILTER ANN[*].EFFECT ANN[*].GENE ANN[*].FEATURE ANN[*].HGVS_C ANN[*].HGVS_P`
-4. One effect per line: Yes.
-5. Click execute and wait.
-6. Click the :eye: icon in the snpsift output and check the results.
+2. Select `SnpSift Extract Fields from a VCF file into a tabular file`
+3. Select `Dataset Collection`
+4. Variant input file in VCF format: `SnpEff eff: on collection` file
+5. Fields to extract: `CHROM POS ID REF ALT FILTER ANN[*].EFFECT ANN[*].GENE ANN[*].FEATURE ANN[*].HGVS_C ANN[*].HGVS_P`
+6. One effect per line: Yes.
+7. Click execute and wait.
+8. Click the :eye: icon in the snpsift output and check the results.
 
-<p align="center"><img src="images/snpsift_params1.png" alt="snpsift" width="500"></p>
+<p align="center"><img src="images/snpsift_params1.png" alt="snpsift" width="800"></p>
 
 > Galaxy history for this exercise: [https://usegalaxy.eu/u/smonzon/h/variant-calling-101-tutorial](https://usegalaxy.eu/u/smonzon/h/variant-calling-101-tutorial)
