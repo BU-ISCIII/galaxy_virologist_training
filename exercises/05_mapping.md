@@ -67,29 +67,25 @@ ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz
 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz
 ```
 
-### Map reads using Bowtie2
+## 3. Preprocess our reads
 
-1. Search bowtie2 software in the search tools box on the left.
+Follow instructions [here](02_quality.md#2-trimming) to pre-process your reads and create the `Paired Collection`
 
-<p align="center"><img src="images/search_bowtie2.png" alt="Search bowtie" width="400"></p>   
+## 4. Map reads using Bowtie2
 
-2. Set bowtie2 version to: 2.5.3+galaxy1
-
-<p align="center"><img src="images/select_version.png" alt="Select version" width="800"></p>
-
-3. Set bowtie2 parameters:
-
-    - Is this single or paired library: paired.
-    - FASTA/Q file #1 : ERR5310322_1
-    - FASTA/Q file #2 : ERR5310322_2
-    - Will you select a reference genome from your history or use a built-in index? : Use a genome from the history and build index.
-    - Do you want to use presets? : Very sensitive local. This setting will hugly affect the mapping results, depending on the dataset/experiment must be tweaked (read [bowtie2 manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml))
-    - Save the bowtie2 mapping statistics to the history
+1. Search `bowtie2` software in the search tools box on the left.
+2. Select `Bowtie2 - map reads against reference genome` on the list
+3. Is this single or paired library > Paired-end
+4. FASTQ Paired Dataset > ERR5310322
+5. Will you select a reference genome from your history or use a built-in index? : Use a genome from the history and build index.
+6. Select reference genome > NC_009942.1 (GCF_000875385.1_ViralProj30293_genomic.fna.gz)
+7. Do you want to use presets? : Very sensitive local. This setting will hugly affect the mapping results, depending on the dataset/experiment must be tweaked (read [bowtie2 manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml))
+8. Save the bowtie2 mapping statistics to the history
+9. Click execute and wait.
 
 <p align="center"><img src="images/bowtie2params1.png" alt="Search bowtie" width="900"></p>   
 <p align="center"><img src="images/bowtie2params2.png" alt="Search bowtie" width="900"></p>   
 
-4. Click execute and wait.
 
 ### Visualize bam file and calculate metrics
 
@@ -109,9 +105,9 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 
 4. Calculate depth of coverage metrics using picard collectWGSMetrics.
 
-    - Search collectwgsmetrics on the search tool box.
-    - Select SAM/BAM dataset or dataset collection: Bowtie2 alignments
-    - Load reference genome from: History and select reference genome fasta file.
+    - Search `collectwgsmetrics` on the search tool box.
+    - Select SAM/BAM dataset or dataset collection > `Data collection` > Bowtie2 on collection: alignments
+    - Load reference genome from: History and select reference genome fasta file (NC_009942.1)
     - Treat bases with coverage exceeding this value as if they had coverage at this value: 3000
 
 <p align="center"><img src="images/collect_metrics.png" alt="view bam file" width="800"></p>
@@ -129,7 +125,7 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
     0.961193
     </details>
 
-### Visualize bam file using IGV
+## 5. Visualize bam file using IGV
 
 In order to visualize our mapping we will use IGV (Integrative Genomics Viewer). This is an open source, freely available and lightweight visualization tool that enables intuitive real-time exploration of diverse, large-scale genomic data sets on standard desktop computers. It supports flexible integration of a wide range of genomic data types including aligned sequence reads, mutations, copy number, RNA interference screens, gene expression, methylation and genomic annotations.
 
