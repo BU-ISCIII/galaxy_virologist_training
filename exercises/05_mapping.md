@@ -59,6 +59,14 @@ https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralPr
 
 <p align="center"><img src="images/changename2.png" alt="Change name 2" width="900"></p>    
 
+You can paste all the files at the same time with this block of code:
+
+```bash
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_1.fastq.gz
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR531/002/ERR5310322/ERR5310322_2.fastq.gz
+https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/875/385/GCF_000875385.1_ViralProj30293/GCF_000875385.1_ViralProj30293_genomic.fna.gz
+```
+
 ### Map reads using Bowtie2
 
 1. Search bowtie2 software in the search tools box on the left.
