@@ -26,7 +26,7 @@ After performing variant calling, we want to know which is the importance of the
 
 ### Create new history
 
-- Click the `+` icon at the top of the history panel and create a new history with the name `mapping 101 tutorial` as explained [here](01_introduction_to_galaxy.md#2-galaxys-history)
+- Click the `+` icon at the top of the history panel and create a new history with the name `annotation 101 tutorial` as explained [here](01_introduction_to_galaxy.md#2-galaxys-history)
 
 ### Upload data
 
