@@ -58,10 +58,10 @@ https://zenodo.org/record/5724970/files/nCoV-2019.artic.V3.scheme.bed.txt?downlo
 
 Finally, rename and tag the data as follows:
 
-- `SARSCOV2-1_R1.fastq.gz`to `SARSCOV2-1_R1`with tagS `#sample1` and `#forward`
-- `SARSCOV2-1_R2.fastq.gz`to `SARSCOV2-1_R2`with tagS `#sample1` and `#reverse`
-- `SARSCOV2-2_R1.fastq.gz`to `SARSCOV2-2_R1`with tagS `#sample2` and `#forward`
-- `SARSCOV2-2_R2.fastq.gz`to `SARSCOV2-2_R2`with tagS `#sample2` and `#reverse`
+- `SARSCOV2-1_R1.fastq.gz`to `SARSCOV2-1_R1`with tagS `#SARSCOV2-1` and `#forward`
+- `SARSCOV2-1_R2.fastq.gz`to `SARSCOV2-1_R2`with tagS `#SARSCOV2-1` and `#reverse`
+- `SARSCOV2-2_R1.fastq.gz`to `SARSCOV2-2_R1`with tagS `#SARSCOV2-2` and `#forward`
+- `SARSCOV2-2_R2.fastq.gz`to `SARSCOV2-2_R2`with tagS `#SARSCOV2-2` and `#reverse`
 - `GCF_009858895.2_ASM985889v3_genomic.200409.fna.gz?download=1` to `NC_045512.2` with tag `#reference`
 - `nCoV-2019.artic.V3.scheme.bed.txt?download=1` to `Amplicon bed` with tag `#amplicons`
 
@@ -114,14 +114,15 @@ To visualize the information coming from FastQC we just have to select the job o
 150 maximum. 2x150 sequencing (paired data of 150 read length)
 </details>
 <details>
-<summary>How many reads has samlpe1 before trimming?</summary>
+<summary>How many reads has SARSCOV2-1 before trimming?</summary>
 <br>
-50000
+50000 in R1 and 50000 in R2 (100000)
 </details>
 <details>
-<summary>How many reads has samlpe2 before trimming?</summary>
+<summary>How many reads has SARSCOV2-2 before trimming?</summary>
 <br>
-50000 (this is because we downsampled the data manually, usually samples from the same run do not have same number of reads)
+50000 in R1 and 50000 in R2 (100000).
+This is because we downsampled the data manually. Usually samples from the same run do not have same number of reads.
 </details>
 
 ## Trimming
@@ -178,24 +179,24 @@ Among the most relevant results, you have the:
 
 **Question**
 <details>
-<summary>How many reads are we keeping from sample1?</summary>
+<summary>How many reads are we keeping from SARSCOV2-1?</summary>
 <br>
 67.598 reads (67.6%)
 </details>
 <details>
-<summary>How many reads did we lost for sample1 and why?</summary>
+<summary>How many reads did we lost for SARSCOV2-1 and why?</summary>
 <br>
 Low quality: 26.814 (26.81%) <br>
 Too many Ns: 6 (0%)<br>
 Too short: 5.582 (5.58%)<br> 
 </details>
 <details>
-<summary>How many reads are we keeping from sample2?</summary>
+<summary>How many reads are we keeping from SARSCOV2-2?</summary>
 <br>
 65.172 (65.17%)
 </details>
 <details>
-<summary>How many reads did we lost for sample2 and why?</summary>
+<summary>How many reads did we lost for SARSCOV2-2 and why?</summary>
 <br>
 Low quality: 29.148 (29.15%) <br>
 Too many Ns: 4 (0%) <br>
@@ -230,12 +231,12 @@ In our case, the file that can be visualize is the `mapping stats` file, which c
 
 **Question**
 <details>
-<summary>Which is the overall alignment rate for sample1?</summary>
+<summary>Which is the overall alignment rate for SARSCOV2-1?</summary>
 <br>
 99.69%
 </details>
 <details>
-<summary>And the overall alignment rate for sample2?</summary>
+<summary>And the overall alignment rate for SARSCOV2-2?</summary>
 <br>
 97.73%
 </details>
@@ -266,12 +267,12 @@ The results of the samtools program gives information about the number and perce
 
 **Question**
 <details>
-<summary>How many reads mapped against the refernce genome for sample1?</summary>
+<summary>How many reads mapped against the refernce genome for SARSCOV2-1?</summary>
 <br>
 67390
 </details>
 <details>
-<summary> And how many for sample2?</summary>
+<summary> And how many for SARSCOV2-2?</summary>
 <br>
 63695
 </details>
@@ -304,22 +305,22 @@ Then you just have to open the file with Excell in your computer, and you will s
 
 **Question**
 <details>
-<summary>Which is the mean coverage for sample1?</summary>
+<summary>Which is the mean coverage for SARSCOV2-1?</summary>
 <br>
 162.190917
 </details>
 <details>
-<summary>Which percetage of the reference genome is covered to more than 10X by sample1 reads?</summary>
+<summary>Which percetage of the reference genome is covered to more than 10X by SARSCOV2-1 reads?</summary>
 <br>
 78.58%
 </details>
 <details>
-<summary>Which is the mean coverage for sample2?</summary>
+<summary>Which is the mean coverage for SARSCOV2-2?</summary>
 <br>
 163.623282
 </details>
 <details>
-<summary> Which percetage of the reference genome is covered to more than 10X by sample2 reads?</summary>
+<summary> Which percetage of the reference genome is covered to more than 10X by SARSCOV2-2 reads?</summary>
 <br>
 88.69%
 </details>
@@ -374,12 +375,12 @@ This variants have passed the minimum quality filter, which we set as 20, and th
 
 **Question**
 <details>
-<summary>How many possitions are diferent (variant) between reference and sample1 that pass all filters?</summary>
+<summary>How many possitions are diferent (variant) between reference and SARSCOV2-1 that PASS all filters?</summary>
 <br>
 40
 </details>
 <details>
-<summary>And how many between reference and sample2 that pass all filters?</summary>
+<summary>And how many between reference and SARSCOV2-2 that PASS all filters?</summary>
 <br>
 40
 </details>
@@ -403,22 +404,22 @@ The SnpEff gives three different results, from which the most interesting ones a
 
 **Question**
 <details>
-<summary>How many missense variants has sample1?</summary>
+<summary>How many missense variants has SARSCOV2-1?</summary>
 <br>
 25
 </details>
 <details>
-<summary>How many INDELs has sample1?</summary>
+<summary>How many INDELs has SARSCOV2-1?</summary>
 <br>
 3
 </details>
 <details>
-<summary>How many missense variants has sample2?</summary>
+<summary>How many missense variants has SARSCOV2-2?</summary>
 <br>
 31
 </details>
 <details>
-<summary>How many INDELs has sample2?</summary>
+<summary>How many INDELs has SARSCOV2-2?</summary>
 <br>
 1
 </details>
@@ -501,12 +502,12 @@ Now we are going to have a look to the results from pangolin. As you can see, re
 
 **Question**
 <details>
-<summary> Which is the lineage of sample1?</summary>
+<summary> Which is the lineage of SARSCOV2-1?</summary>
 <br>
 B.1.1.7 (Alpha)
 </details>
 <details>
-<summary> And the lineage of sample2?</summary>
+<summary> And the lineage of SARSCOV2-2?</summary>
 <br>
 AY.33 (Delta)
 </details>
@@ -515,7 +516,7 @@ AY.33 (Delta)
 
 If you have any problem following this training and you want to visualize the resulting file you can access them through this URL:
 
-https://usegalaxy.eu/u/s.varona/h/viralrecon
+https://usegalaxy.eu/u/svarona/h/viralrecon-2026
 
 And viralrecon workflfow in:
 
