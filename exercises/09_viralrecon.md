@@ -69,13 +69,35 @@ Finally, rename and tag the data as follows:
 
 ## Quality
 
+### Create data collections
+
+Once the .fastq files are in green, we will have to create the data collections for each sample. To create a list of paired datasets, given our .fastq files, which will then be used for the rest of the steps of this workshop, we must:
+
+1. Select `Select items`
+2. Select the two fastqsanger.gz files **of the same sample**
+3. Click on 2 of X selected.
+4. Select _Advanced Build List_
+5. Select _List of Paired Datasets_ box
+6. click on _Next_
+7. Check the auto-pairing configuration and click again on _Next_
+8. Give a name to your list
+9. Finally click on Build
+10. Repeat steps 2-9 for the other sample
+
+<p align="center"><img src="images/viralrecon_data_collection1.png" alt="viralrecon_tag" width="200"></p>
+<p align="center"><img src="images/viralrecon_data_collection2.png" alt="viralrecon_tag" width="600"></p>
+<p align="center"><img src="images/viralrecon_data_collection3.png" alt="viralrecon_tag" width="600"></p>
+<p align="center"><img src="images/viralrecon_data_collection4.png" alt="viralrecon_tag" width="600"></p>
+
+After having done this, a list of datasets will have been generated
+
 ### Quality Analysis (FastQC)
 
 Once we have the raw data, an important step is to analyze the quality of the reads, to know if the reads are worth it. To do this, we have to look for the program "_FastQC_" in the search bar, then select **FastQC Read Quality reports** and set the following parameters, same as [here](02_quality.md#1-quality-control):
 
-- Select multiple file data set and select the fastq files R1 and R2 for both samples
-- With *Ctrl* select the two datasets
-- Then go down and select **Run tool**
+- Select collection data set and select the data collections for one of the samples
+- Then select **Run tool**
+- Repeat for the other data collection
 
 <p align="center"><img src="images/viralrecon_fastqc.png" alt="viralrecon_fastqc" width="900"></p>
 
@@ -110,9 +132,8 @@ Once we have check the quality of our reads, it's important to trim low quality 
 
 1. Search for **fastp** in the tools and select **fastp - fast all-in-one preprocessing for FASTQ files**
 2. Select custom parameters:
-    - Single-end or paired reads > Paired
-        - Input 1 > Multiple datasets > Select R1 reads for both samples
-        - Input 2 > Multiple datasets > Select R2 reads for both samples
+    - Single-end or paired reads > Paired Collection
+        - Select the paired collection of one of the samples
     - Display Filter Options
         - Quality Filtering options
             - Qualified Quality Phred = 30
@@ -126,6 +147,7 @@ Once we have check the quality of our reads, it's important to trim low quality 
             - Cut by quality in tail (3') > Yes
             - Cutting mean quality = 30
 3. Finally, click on **Run tool**
+4. Repeat steps 2 and 3 for the other sample
 
 ![fastp1](images/viralrecon_fastp1.png)
 ![fastp2](images/viralrecon_fastp2.png)
@@ -188,14 +210,14 @@ In order to call for variants between the samples and the reference, it's mandat
 
 Now we can start with the main mapping process. The first thing we have to do is look for the program "_Bowtie2_" in the search bar and then select "_Bowtie2 - map reads against reference genome_". Here we will have to set the following parameters, for the first sample, same as [here](04_mapping.md#map-reads-using-bowtie2)
 
-3. Is this single or paired library > Paired-end
-4. Fasta/Q file #1: Multiple datasets > **fastp Read 1 output** for both samples
-5. Fasta/Q file #2: Multiple datasets > **fastp Read 2 output** for both samples
-6. Will you select a reference genome from your history or use a built-in index? > Use a built-in genome index
-7. Select reference genome > SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).
-8. Do you want to use presets? > Very sensitive local
-9. Save the bowtie2 mapping statistics to the history > Yes
-10. Run tool
+1. Is this single or paired library > Paired-end
+2. Fasta/Q Paired Dataset: **fastp on collection X: Pair-end output** for one sample
+3. Will you select a reference genome from your history or use a built-in index? > Use a built-in genome index
+4. Select reference genome > SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).
+5. Do you want to use presets? > Very sensitive local
+6. Save the bowtie2 mapping statistics to the history > Yes
+7. Run tool
+8. Repeat steps 1-7 for the other sample
 
 ![bowtie1](images/viralrecon_bowtie1.png)
 ![bowtie2](images/viralrecon_bowtie2.png)
@@ -224,9 +246,19 @@ The previously shown files give few human readable information, because mapping 
 
 ### Samtools flagstat
 
-The first program is Samtools, from which we will use the module samtools flagstat. To do this, we have to look in the search bar for "_samtools flagstat_" and then select "_Samtools flagstat tabulate descriptive stats for BAM datset_". There, we just have to select the samples we want to perform the mapping stats (in the example there are two samples, you just have to use one): _Bowtie2 on data X, data X and data X: alingment_. You can select the samples from the list in _Multiple datasets_ or select the folder icon (_Browse datasets_) to select the file from the history. Finally, select _Execute_
+The first program is Samtools, from which we will use the module samtools flagstat. To do this, we have to:
 
-![samtools_flagstat_1](images/viralrecon_flagstats.png)
+1. Look in the search bar for "_samtools flagstat_"
+2. Select "_Samtools flagstat tabulate descriptive stats for BAM datset_".
+3. Select > _Multiple datasets_ > _"Browse or Upload Datasets"_ `(...)`
+4. Select with `ctrl` the both `Bowtie on aligments` bam files
+5. Then select _"Select"_
+6. Select the samples from the list in _Multiple datasets_
+7. Select _Run tool_
+
+![samtools_flagstat_1](images/viralrecon_flagstats1.png)
+![samtools_flagstat_1](images/viralrecon_flagstats2.png)
+![samtools_flagstat_1](images/viralrecon_flagstats3.png)
 
 ### Samtools results
 
@@ -250,14 +282,17 @@ Another program that gives statistical information about the mapping process is 
 
 You have to change the following parameters:
 
-1. Select SAM/BAM dataset or dataset collection > Dataset collection > Select both bam files at once
-2. Load reference genome from > Local cache
-3. Using reference genome > SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).
-8. Treat bases with coverage exceeding this value as if they had coverage at this value = 1000
-9. Select validation stringency > Lenient
-10. Run tool.
+1. Select SAM/BAM dataset or dataset collection > _Multiple datasets_ > _"Browse or Upload Datasets"_ `(...)`
+2. Select with `ctrl` the both `Bowtie on aligments` bam files
+3. Load reference genome from > Local cache
+4. Using reference genome > SARS-CoV-2 isolate Wuhan-Hu-1, complete genome (NC_045512.2).
+5. Treat bases with coverage exceeding this value as if they had coverage at this value = 1000
+6. Select validation stringency > Lenient
+7. Run tool.
 
-![picard_wgsmetrics1](images/viralrecon_picard.png)
+![picard_wgsmetrics1](images/viralrecon_picard1.png)
+![picard_wgsmetrics1](images/viralrecon_flagstats2.png)
+![picard_wgsmetrics1](images/viralrecon_picard2.png)
 
 This process will generate one output file per .bam alignment file selected as input.
 
@@ -297,14 +332,18 @@ After mapping the reads to the reference genome, we are interested in removing t
 
 Once you have the bed file, you just have to search for "_ivar trim_" in the search bar and select "_ivar trim Trim reads in aligned BAM_". Then follow these steps:
 
-1. Bam file > Select the aligment bam file generated with Bowtie2 for both samples.
-2. Source of primer information > Built-in.
-3. Primer scheme name > SARS-CoV-2-ARTICv3
-4. Include reads with no primers > Yes.
-5. Require a minimum length for reads to retain them after any trimming? > Yes and provide a custom threshold
-6. Minimum trimmed length threshold = 20
+1. Bam file > _Multiple datasets_ > _"Browse or Upload Datasets"_ `(...)`
+2. Select with `ctrl` the both `Bowtie on aligments` bam files
+3. Source of primer information > Built-in.
+4. Primer scheme name > SARS-CoV-2-ARTICv3
+5. Include reads not ending in any primer site > Yes
+6. Require a minimum length for reads to retain them after any trimming? > Yes and provide a custom threshold
+7. Minimum trimmed length threshold = 20
 
-![ivar_trim1](images/viralrecon_ivartrim.png)
+![ivar_trim1](images/viralrecon_ivartrim1.png)
+![picard_wgsmetrics1](images/viralrecon_flagstats2.png)
+![ivar_trim1](images/viralrecon_ivartrim2.png)
+![ivar_trim1](images/viralrecon_ivartrim3.png)
 
 ### iVar trim results
 
@@ -319,8 +358,8 @@ Once we have the alingment statistics and files with amplicon primers trimmed, w
 [iVar](https://andersen-lab.github.io/ivar/html/manualpage.html) uses primer positions supplied in a BED file to soft clip primer sequences from an aligned and sorted BAM file. Following this, the reads are trimmed based on a quality threshold(Default: 20). To do the quality trimming, iVar uses a sliding window approach(Default: 4). The windows slides from the 5' end to the 3' end and if at any point the average base quality in the window falls below the threshold, the remaining read is soft clipped. If after trimming, the length of the read is greater than the minimum length specified(Default: 30), the read is written to the new trimmed BAM file.
 
 1. Search for `ivar variants` and select `ivar variants Call variants from aligned BAM file`
-2. Bam file > Select ivar trimmed bam files for both samples
-3. Reference > GCF_009858895.2_ASM985889v3 (as fasta)
+2. Bam file > _Multiple datasets_ >Select ivar trimmed bam files for both samples
+3. Reference > NC_045512.2
 4. Minimum frequency threshold > 0,75
 5. Output format > Both tabular and VCF
 6. In VCF only output variants that PASS all filters > Yes
@@ -395,7 +434,7 @@ The first step consist in including the called variants into the reference genom
 1. VCF/BCF Data > VCF resulting from iVar variants for both samples
 2. Choose the source for the reference genome > Use a genome from the history
 3. Reference genome > Fasta file uploaded at the begining.
-4. Execute
+4. Run tool
 
 ![bcftools_consensus](images/viralrecon_bcftoolsconsensus.png)
 
@@ -408,10 +447,9 @@ At this point, we have the consensus viral genome, but we know that we have filt
 To do that you will search for "_bedtools genomecov_" in the search bar and select "_bedtools Genome Coverage compute the coverage over an entire genome_", the you will have to select the following files:
 
 1. Input type > BAM
-2. BAM file > iVar trim output bam files for both samples
-3. Output type > BedGraph coverage file
-4. Report regions with zero coverage > Yes
-5. Execute
+2. BAM file > _Multiple datasets_ > iVar trim output bam files for both samples
+3. Report regions with zero coverage > Yes
+4. Run tool
 
 ![bedtools_genomecov](images/viralrecon_bedtoolsgenomecov.png)
 
@@ -423,10 +461,10 @@ This process will generate a BED file where each genomic position range of the r
 
 From this resulting file from betdools genomecoverage you are going to select those regions with a coverage lower than 10X. Writing in the search bar "_awk_" and selecting "_Text reformatting with awk_", you are going to change:
 
-3. File to process > Bedtools genome coverage file with the coverage regions for both samples
-4. AWK Program = `$4 < 10`
+1. File to process > _Multiple datasets_ > Bedtools genome coverage file with the coverage regions for both samples
+2. AWK Program = `$4 < 10`
   - **This will filter all the lines (genomic regions) that have a value lower than 10 in the 4th column (coverage)**
-5. Execute
+3. Run tool
 
 ![awk](images/viralrecon_awk.png)
 
@@ -436,9 +474,9 @@ The resulting file is exactly the same as the one in Bedtools genomecoverage but
 
 Now that you have the consensus genome and the regions with a sequencing depth lower than 10X, you are going to "mask" those regions in the consensus genome replacing the nucleotides in those regions with "N"s. You have to search for "_bedtools maskfasta_", select "_bedtools MaskFastaBed use intervals to mask sequences from a FASTA file_" and then select the following parameters:
 
-3. BED/bedGraph/GFF/VCF/EncodePeak file > Select the BED files resulting from AWK text filter for both samples
-4. FASTA file > Select the consensus genome fasta file generated with Bcftools consensus, for both samples
-5. Execute
+1. BED/bedGraph/GFF/VCF/EncodePeak file > _Multiple datasets_ > Select the BED files resulting from AWK text filter for both samples
+2. FASTA file > _Multiple datasets_ > Select the consensus genome fasta file generated with Bcftools consensus, for both samples
+3. Run tool
 
 ![bedtools_maskfasta](images/viralrecon_bedtoolsmaskfasta.png)
 
@@ -454,8 +492,8 @@ Now we are going to determine the lineage of the samples. We will use a software
 
 1. Search for the **pangolin** tool
 2. Select **Pangolin Phylogenetic Assignment of Outbreak Lineages** and set the following parameters:
-3. Select the *bedtools MaskFastaBed* generated in the previous step as input fasta file for both samples
-4. **Execute**
+3. Input FASTA file(s) > _Multiple datasets_ > Select the *bedtools MaskFastaBed* generated in the previous step as input fasta file for both samples
+4. **Run tool**
 
 <p align="center"><img src="images/viralrecon_pangolin.png" alt="pangolin" width="900"></p>
 
